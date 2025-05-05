@@ -1,4 +1,5 @@
-<!DOCTYPE html><html lang="id">
+<!DOCTYPE html>
+<html lang="id">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
@@ -23,10 +24,9 @@
     .card-price { color: var(--accent); font-weight: bold; margin-bottom: 1rem; }
     .btn-buy { margin-top: auto; background: var(--primary); color: #fff; border: none; padding: .6rem; border-radius: var(--radius); cursor: pointer; transition: background var(--transition); }
     .btn-buy:hover { background: #3f37c9; }
-    /* Modal */
     .modal { position: fixed; inset: 0; background: rgba(0,0,0,0.5); display: none; align-items: center; justify-content: center; padding: 1rem; }
     .modal.active { display: flex; }
-    .modal-content { background: #fff; border-radius: var(--radius); max-width: 500px; width: 100%; padding: 1.5rem; position: relative; max-height: 90vh; overflow-y: auto; }
+    .modal-content { background: #fff; border-radius: var(--radius); max-width: 500px; width: 100%; padding: 1.5rem; position: relative; }
     .close-btn { position: absolute; top: .5rem; right: .5rem; background: none; border: none; font-size: 1.5rem; cursor: pointer; color: var(--light); }
     .close-btn:hover { color: var(--accent); }
     .form-group { margin-bottom: 1rem; }
@@ -59,32 +59,39 @@
       <div class="tab" data-cat="vvip">PT VVIP</div>
     </div>
     <div class="grid" id="product-grid"></div>
-  </div>  <!-- Modal Pembayaran -->  <div class="modal" id="payment-modal">
+  </div>
+
+  <!-- Modal Pembayaran -->
+  <div class="modal" id="payment-modal">
     <div class="modal-content">
       <button class="close-btn" id="close-modal">&times;</button>
-      <div class="form-group"><label>Produk</label><input type="text" id="product-name" readonly></div>
-      <div class="form-group"><label>Harga (Rp)</label><input type="text" id="product-price" readonly></div>
-      <div class="form-group"><label>Kontak (HP/Telegram)</label><input type="text" id="contact" placeholder="0812xxxxx atau @username"></div>
-      <div class="form-group">
-        <label>Metode Pembayaran</label>
-        <div class="payment-methods">
-          <div class="payment-method" data-method="dana">DANA</div>
-          <div class="payment-method" data-method="gopay">GoPay</div>
-          <div class="payment-method" data-method="qris">QRIS</div>
+      <div id="form-wrapper">
+        <div class="form-group"><label>Produk</label><input type="text" id="product-name" readonly></div>
+        <div class="form-group"><label>Harga (Rp)</label><input type="text" id="product-price" readonly></div>
+        <div class="form-group"><label>Kontak (HP/Telegram)</label><input type="text" id="contact" placeholder="0812xxxxx atau @username"></div>
+        <div class="form-group">
+          <label>Metode Pembayaran</label>
+          <div class="payment-methods">
+            <div class="payment-method" data-method="dana">DANA</div>
+            <div class="payment-method" data-method="gopay">GoPay</div>
+            <div class="payment-method" data-method="qris">QRIS</div>
+          </div>
+          <div id="payment-details"></div>
         </div>
-        <div id="payment-details"></div>
+        <div class="form-group upload-area" id="upload-area">
+          <p>Klik untuk unggah bukti pembayaran</p>
+          <input type="file" id="proof" accept="image/*">
+          <img id="preview-image" alt="Preview">
+        </div>
+        <div class="error" id="error-msg">Lengkapi semua data!</div>
+        <div class="loader" id="loader"><div class="spinner"></div><p>Memproses...</p></div>
+        <button class="btn-submit" id="submit-btn">Kirim Pembayaran</button>
+        <div class="confirmation" id="confirmation"><p>Pembayaran berhasil terkirim!</p></div>
       </div>
-      <div class="form-group upload-area" id="upload-area">
-        <p>Klik untuk unggah bukti pembayaran</p>
-        <input type="file" id="proof" accept="image/*">
-        <img id="preview-image" alt="Preview">
-      </div>
-      <div class="error" id="error-msg">Lengkapi semua data!</div>
-      <div class="loader" id="loader"><div class="spinner"></div><p>Memproses...</p></div>
-      <button class="btn-submit" id="submit-btn">Kirim Pembayaran</button>
-      <div class="confirmation" id="confirmation"><p>Pembayaran berhasil terkirim!</p></div>
     </div>
-  </div>  <script>
+  </div>
+
+  <script>
     const TELEGRAM_BOT_TOKEN = '7567845460:AAFPXLrafKx1ZswhrUyXKSP6Oa3MsyX3Pew';
     const TELEGRAM_CHAT_ID = '8050058475';
     const paymentInfo = {
@@ -131,8 +138,67 @@
     }
     tabs.forEach(tab => tab.addEventListener('click', () => {
       tabs.forEach(x => x.classList.remove('active'));
-      tab.classList.add('active'); currentCat = tab.getAttribute('data-cat'); renderProducts();
+      tab.classList.add('active');
+      currentCat = tab.getAttribute('data-cat');
+      renderProducts();
     }));
-    // Modal logic
     const modal = document.getElementById('payment-modal');
-    const closeModalBtn = document.get
+    const closeModalBtn = document.getElementById('close-modal');
+    const productNameInput = document.getElementById('product-name');
+    const productPriceInput = document.getElementById('product-price');
+    const contactInput = document.getElementById('contact');
+    const methods = document.querySelectorAll('.payment-method');
+    const paymentDetailsDiv = document.getElementById('payment-details');
+    const proofInput = document.getElementById('proof');
+    const previewImage = document.getElementById('preview-image');
+    const submitBtn = document.getElementById('submit-btn');
+    const loader = document.getElementById('loader');
+    const errorMsg = document.getElementById('error-msg');
+    const confirmation = document.getElementById('confirmation');
+    let selectedMethod = null;
+    function openModal(p) {
+      productNameInput.value = p.name;
+      productPriceInput.value = p.price;
+      contactInput.value = '';
+      methods.forEach(m => m.classList.remove('selected')); paymentDetailsDiv.innerHTML = '';
+      previewImage.style.display = 'none'; proofInput.value = '';
+      errorMsg.style.display = 'none'; confirmation.style.display = 'none';
+      modal.classList.add('active');
+    }
+    closeModalBtn.addEventListener('click', () => modal.classList.remove('active'));
+    methods.forEach(m => m.addEventListener('click', () => {
+      methods.forEach(x => x.classList.remove('selected'));
+      m.classList.add('selected'); selectedMethod = m.getAttribute('data-method');
+      const info = paymentInfo[selectedMethod];
+      if (info.type === 'text') {
+        paymentDetailsDiv.innerHTML = `<p>Bayar ke: <strong>${info.value}</strong></p>`;
+      } else {
+        paymentDetailsDiv.innerHTML = `<img src="${info.src}" alt="QRIS" style="max-width:100%;">`;
+      }
+    }));
+    document.getElementById('upload-area').addEventListener('click', () => proofInput.click());
+    proofInput.addEventListener('change', e => {
+      const f = e.target.files[0]; if (f) { previewImage.src = URL.createObjectURL(f); previewImage.style.display = 'block'; }
+    });
+    async function sendToTelegram(product, price, contact, method, file) {
+      const text = `Produk: ${product}\nHarga: Rp${price.toLocaleString('id')}\nKontak: ${contact}\nMetode: ${method.toUpperCase()}`;
+      await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
+        method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ chat_id: TELEGRAM_CHAT_ID, text })
+      });
+      const formData = new FormData(); formData.append('chat_id', TELEGRAM_CHAT_ID); formData.append('photo', file); formData.append('caption', 'Bukti Pembayaran');
+      await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendPhoto`, { method: 'POST', body: formData });
+    }
+    submitBtn.addEventListener('click', async () => {
+      const name = productNameInput.value.trim(); const price = parseInt(productPriceInput.value);
+      const contact = contactInput.value.trim(); const file = proofInput.files[0];
+      if (!name || !price || !contact || !selectedMethod || !file) { errorMsg.style.display = 'block'; return; }
+      errorMsg.style.display = 'none'; loader.style.display = 'block'; submitBtn.disabled = true;
+      try {
+        await sendToTelegram(name, price, contact, selectedMethod, file);
+        confirmation.style.display = 'block';
+      } catch (e) { errorMsg.textContent = 'Gagal mengirim ke Telegram'; errorMsg.style.display = 'block'; }
+      loader.style.display = 'none'; submitBtn.disabled = false;    });
+    renderProducts();
+  </script>
+</body>
+</html>
