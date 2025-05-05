@@ -5,175 +5,193 @@
   <title>Panel & Script Shop</title>
   <style>
     :root { --primary: #4361ee; --accent: #4cc9f0; --bg: #f5f7fd; --fg: #212529; --light: #6c757d; --radius: 8px; --transition: 0.3s ease; }
-    * { margin:0; padding:0; box-sizing:border-box; }
-    body { font-family:"Segoe UI",sans-serif; background:var(--bg); color:var(--fg); }
-    a { text-decoration:none; color:inherit; }
-    .container { max-width:1200px; margin:auto; padding:1rem; }
-    header { text-align:center; padding:3rem 0; }
-    header h1 { font-size:2.5rem; color:var(--primary); }
-    header p { color:var(--light); margin:1rem 0; }
-    .tabs { display:flex; justify-content:center; gap:1rem; margin:2rem 0; }
-    .tab { padding:.5rem 1rem; cursor:pointer; border-radius:var(--radius); background:#fff; box-shadow:0 2px 6px rgba(0,0,0,0.05); transition:background var(--transition), color var(--transition); }
-    .tab.active, .tab:hover { background:var(--primary); color:#fff; }
-    .grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:1.5rem; }
-    .card { background:#fff; border-radius:var(--radius); box-shadow:0 4px 12px rgba(0,0,0,0.05); overflow:hidden; transition:transform var(--transition); }
-    .card:hover { transform:translateY(-4px); }
-    .card img { width:100%; height:140px; object-fit:cover; background:#e9ecef; }
-    .card-body { padding:1rem; display:flex; flex-direction:column; }
-    .card-title { font-weight:600; margin-bottom:.5rem; }
-    .card-price { color:var(--accent); font-weight:bold; margin-bottom:1rem; }
-    .btn-buy { margin-top:auto; background:var(--primary); color:#fff; padding:.6rem; border:none; border-radius:var(--radius); cursor:pointer; transition:background var(--transition); }
-    .btn-buy:hover { background:#3f37c9; }
-    .modal { position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); display:none; align-items:center; justify-content:center; padding:1rem; z-index:10; }
-    .modal.active { display:flex; }
-    .modal-content { background:#fff; border-radius:var(--radius); width:100%; max-width:500px; padding:1.5rem; position:relative; animation:slideDown var(--transition); }
-    @keyframes slideDown { from{transform:translateY(-20px);opacity:0}to{transform:translateY(0);opacity:1} }
-    .modal-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:1rem; }
-    .close-btn { background:none;border:none;font-size:1.5rem;cursor:pointer;color:var(--light);transition:color var(--transition); }
-    .close-btn:hover { color:var(--accent); }
-    .form-group { margin-bottom:1rem; }
-    .form-group label { display:block; margin-bottom:.25rem; font-weight:600; }
-    .form-group input { width:100%; padding:.6rem; border:1px solid #ced4da; border-radius:var(--radius); transition:border var(--transition); }
-    .form-group input:focus { border-color:var(--primary); outline:none; }
-    .payment-methods { display:flex; gap:.5rem; flex-wrap:wrap; margin-top:.5rem; }
-    .payment-method { flex:1; min-width:100px; text-align:center; border:2px solid #ced4da; border-radius:var(--radius); padding:.5rem; cursor:pointer; transition:border var(--transition); }
-    .payment-method.selected { border-color:var(--primary); background:rgba(67,97,238,0.1); }
-    .payment-method img { height:30px; margin-bottom:.25rem; }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: "Segoe UI", sans-serif; background: var(--bg); color: var(--fg); }
+    .container { max-width: 1200px; margin: auto; padding: 1rem; }
+    header { text-align: center; padding: 3rem 0; }
+    header h1 { font-size: 2.5rem; color: var(--primary); }
+    header p { color: var(--light); }
+    .tabs { display: flex; justify-content: center; gap: 1rem; margin-bottom: 2rem; }
+    .tab { padding: .5rem 1rem; background: #fff; border-radius: var(--radius); cursor: pointer; transition: background var(--transition), color var(--transition); }
+    .tab.active { background: var(--primary); color: #fff; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px,1fr)); gap: 1.5rem; }
+    .card { background: #fff; border-radius: var(--radius); box-shadow: 0 4px 12px rgba(0,0,0,0.05); overflow: hidden; transition: transform var(--transition); }
+    .card:hover { transform: translateY(-4px); }
+    .card img { width: 100%; height: 140px; object-fit: cover; }
+    .card-body { padding: 1rem; display: flex; flex-direction: column; }
+    .card-title { font-size: 1.1rem; margin-bottom: .5rem; }
+    .card-price { color: var(--accent); font-weight: bold; margin-bottom: 1rem; }
+    .btn-buy { margin-top: auto; background: var(--primary); color: #fff; border: none; padding: .6rem; border-radius: var(--radius); cursor: pointer; transition: background var(--transition); }
+    .btn-buy:hover { background: #3f37c9; }
+    .modal { position: fixed; inset: 0; background: rgba(0,0,0,0.5); display: none; align-items: center; justify-content: center; padding: 1rem; }
+    .modal.active { display: flex; }
+    .modal-content { background: #fff; border-radius: var(--radius); max-width: 500px; width: 100%; padding: 1.5rem; position: relative; }
+    .close-btn { position: absolute; top: .5rem; right: .5rem; background: none; border: none; font-size: 1.5rem; cursor: pointer; color: var(--light); }
+    .close-btn:hover { color: var(--accent); }
+    .form-group { margin-bottom: 1rem; }
+    .form-group label { display: block; margin-bottom: .25rem; font-weight: 600; }
+    .form-group input { width: 100%; padding: .6rem; border: 1px solid #ced4da; border-radius: var(--radius); transition: border var(--transition); }
+    .form-group input:focus { border-color: var(--primary); outline: none; }
+    .payment-methods { display: flex; gap: .5rem; margin-top: .5rem; }
+    .payment-method { flex: 1; text-align: center; padding: .5rem; border: 2px solid #ced4da; border-radius: var(--radius); cursor: pointer; }
+    .payment-method.selected { border-color: var(--primary); background: rgba(67,97,238,0.1); }
     #payment-details { margin: .5rem 0 1rem; }
-    .upload-area { border:2px dashed #ced4da; border-radius:var(--radius); padding:1rem; text-align:center; cursor:pointer; transition:border var(--transition); }
-    .upload-area:hover { border-color:var(--primary); }
-    .upload-area input { display:none; }
-    #preview-image { max-width:100%; margin-top:.5rem; display:none; }
-    .btn-submit { width:100%; padding:.8rem; background:var(--accent); border:none; border-radius:var(--radius); font-weight:600; cursor:pointer; transition:background var(--transition); }
-    .btn-submit:hover { background:#38b8d8; }
-    .loader { display:none; text-align:center; margin:1rem 0; }
-    .spinner { border:4px solid #f3f3f3; border-top:4px solid var(--primary); border-radius:50%; width:30px; height:30px; animation:spin 1s linear infinite; margin:auto; }
-    .error { color:var(--accent); text-align:center; display:none; margin-bottom:1rem; }
-    .confirmation { text-align:center; display:none; }
-    .confirmation i { font-size:3rem; color:var(--accent); margin-bottom:.5rem; }
+    .upload-area { border: 2px dashed #ced4da; padding: 1rem; border-radius: var(--radius); text-align: center; cursor: pointer; }
+    .upload-area:hover { border-color: var(--primary); }
+    #preview-image { display: none; max-width: 100%; margin-top: .5rem; }
+    .btn-submit { width: 100%; padding: .8rem; background: var(--accent); border: none; border-radius: var(--radius); font-weight: 600; cursor: pointer; }
+    .btn-submit:hover { background: #38b8d8; }
+    .loader, .error, .confirmation { text-align: center; margin-top: 1rem; display: none; }
+    .spinner { border: 4px solid #f3f3f3; border-top: 4px solid var(--primary); border-radius: 50%; width: 30px; height: 30px; animation: spin 1s linear infinite; margin: auto; }
+    @keyframes spin { to { transform: rotate(360deg); } }
   </style>
 </head>
-<body>  <header class="container">
+<body>
+  <header class="container">
     <h1>Panel & Script Shop</h1>
     <p>Pilih kategori untuk mulai belanja</p>
-  </header>  <div class="tabs container">
-    <div class="tab active" data-cat="panel">Panel Hosting</div>
-    <div class="tab" data-cat="bot">Script Bot</div>
-    <div class="tab" data-cat="vvip">PT VVIP</div>
-  </div>  <div class="container">
+  </header>
+  <div class="container">
+    <div class="tabs">
+      <div class="tab active" data-cat="panel">Panel Hosting</div>
+      <div class="tab" data-cat="bot">Script Bot</div>
+      <div class="tab" data-cat="vvip">PT VVIP</div>
+    </div>
     <div class="grid" id="product-grid"></div>
-  </div>  <div class="modal" id="payment-modal">
+  </div>  <!-- Modal Pembayaran -->  <div class="modal" id="payment-modal">
     <div class="modal-content">
-      <div class="modal-header">
-        <h2>Pembayaran</h2>
-        <button class="close-btn" id="close-modal">&times;</button>
-      </div>
+      <button class="close-btn" id="close-modal">&times;</button>
       <div id="form-wrapper">
         <div class="form-group"><label>Produk</label><input type="text" id="product-name" readonly></div>
-        <div class="form-group"><label>Harga (Rp)</label><input type="number" id="product-price" readonly></div>
-        <div class="form-group"><label>Nomor HP / Username Telegram</label><input type="text" id="contact" placeholder="08123456789 atau @username"></div>
+        <div class="form-group"><label>Harga (Rp)</label><input type="text" id="product-price" readonly></div>
+        <div class="form-group"><label>Kontak (HP/Telegram)</label><input type="text" id="contact" placeholder="0812xxxxx atau @username"></div>
         <div class="form-group">
           <label>Metode Pembayaran</label>
           <div class="payment-methods">
-            <div class="payment-method" data-method="dana"><img src="https://via.placeholder.com/80x30?text=DANA"><br>DANA</div>
-            <div class="payment-method" data-method="gopay"><img src="https://via.placeholder.com/80x30?text=GoPay"><br>GoPay</div>
-            <div class="payment-method" data-method="qris"><img src="https://via.placeholder.com/80x30?text=QRIS"><br>QRIS</div>
+            <div class="payment-method" data-method="dana">DANA</div>
+            <div class="payment-method" data-method="gopay">GoPay</div>
+            <div class="payment-method" data-method="qris">QRIS</div>
           </div>
           <div id="payment-details"></div>
         </div>
-        <div class="form-group upload-area" id="upload-area"><p>Klik untuk unggah bukti pembayaran</p><input type="file" id="proof" accept="image/*"><img id="preview-image" alt="Preview"></div>
-        <div class="error" id="error-msg">Lengkapi semua data terlebih dahulu!</div>
+        <div class="form-group upload-area" id="upload-area">
+          <p>Klik untuk unggah bukti pembayaran</p>
+          <input type="file" id="proof" accept="image/*">
+          <img id="preview-image" alt="Preview">
+        </div>
+        <div class="error" id="error-msg">Lengkapi semua data!</div>
         <div class="loader" id="loader"><div class="spinner"></div><p>Memproses...</p></div>
-        <button class="btn-submit" id="submit-btn">Konfirmasi Pembayaran</button>
+        <button class="btn-submit" id="submit-btn">Kirim Pembayaran</button>
+        <div class="confirmation" id="confirmation"><p>Pembayaran berhasil terkirim!</p></div>
       </div>
-      <div class="confirmation" id="confirmation"><i class="fas fa-check-circle"></i><h3>Pembayaran Berhasil!</h3><p>Admin akan segera menghubungi Anda.</p></div>
     </div>
-  </div>  <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/js/all.min.js"></script>  <script>
-    const TELEGRAM_BOT_TOKEN = '7567845460:AAFPXLrafKx1ZswhrUyXKSP6Oa3MsyX3Pew';
-    const TELEGRAM_CHAT_ID   = '8050058475';
-
+  </div>  <script>
+    const TELEGRAM_BOT_TOKEN = 'YOUR_BOT_TOKEN';
+    const TELEGRAM_CHAT_ID = 'YOUR_CHAT_ID';
     const paymentInfo = {
-      dana: { type:'text',  value:'082112345678' },
-      gopay:{ type:'text',  value:'082298765432' },
-      qris: { type:'image', src:'https://via.placeholder.com/150?text=QRIS+Code' }
+      dana: { type: 'text', value: '082112345678' },
+      gopay: { type: 'text', value: '082298765432' },
+      qris: { type: 'image', src: 'https://via.placeholder.com/150?text=QRIS' }
     };
-
     const products = [
       { name:'Panel 1GB', price:10000, cat:'panel' },
-      /* ... produk lainnya ... */
+      { name:'Panel 2GB', price:20000, cat:'panel' },
+      { name:'Panel 3GB', price:30000, cat:'panel' },
+      { name:'Panel 4GB', price:40000, cat:'panel' },
+      { name:'Panel 5GB', price:50000, cat:'panel' },
+      { name:'Panel 6GB', price:60000, cat:'panel' },
+      { name:'Panel 7GB', price:70000, cat:'panel' },
+      { name:'Panel 8GB', price:80000, cat:'panel' },
+      { name:'Panel 9GB', price:90000, cat:'panel' },
+      { name:'Panel 10GB', price:100000, cat:'panel' },
+      { name:'Panel Unlimited', price:150000, cat:'panel' },
+      { name:'SC BOT V1', price:20000, cat:'bot' },
+      { name:'SC BOT V2', price:30000, cat:'bot' },
+      { name:'SC BOT V3', price:40000, cat:'bot' },
+      { name:'Admin Panel', price:50000, cat:'bot' },
+      { name:'Owner Panel PT Panel', price:100000, cat:'bot' },
       { name:'PT VVIP', price:50000, cat:'vvip' }
     ];
-
     const grid = document.getElementById('product-grid');
     const tabs = document.querySelectorAll('.tab');
     let currentCat = 'panel';
-
     function renderProducts() {
       grid.innerHTML = '';
-      products.filter(p=>p.cat===currentCat).forEach(p=>{
-        const card=document.createElement('div'); card.className='card';
-        card.innerHTML=`<img src="https://via.placeholder.com/400x140?text=${encodeURIComponent(p.name)}"><div class="card-body"><div class="card-title">${p.name}</div><div class="card-price">Rp${p.price.toLocaleString('id')}</div><button class="btn-buy">Beli Sekarang</button></div>`;
-        card.querySelector('.btn-buy').addEventListener('click',()=>openModal(p)); grid.appendChild(card);
+      products.filter(p => p.cat === currentCat).forEach(p => {
+        const card = document.createElement('div'); card.className = 'card';
+        card.innerHTML = `
+          <img src="https://via.placeholder.com/400x140?text=${encodeURIComponent(p.name)}">
+          <div class="card-body">
+            <div class="card-title">${p.name}</div>
+            <div class="card-price">Rp${p.price.toLocaleString('id')}</div>
+            <button class="btn-buy">Beli Sekarang</button>
+          </div>`;
+        card.querySelector('.btn-buy').addEventListener('click', () => openModal(p));
+        grid.appendChild(card);
       });
     }
-    tabs.forEach(tab=>tab.addEventListener('click',()=>{tabs.forEach(x=>x.classList.remove('active'));tab.classList.add('active');currentCat=tab.getAttribute('data-method')||tab.getAttribute('data-cat');renderProducts();}));
-
-    const modal=document.getElementById('payment-modal');
-    const closeModalBtn=document.getElementById('close-modal');
-    const productNameInput=document.getElementById('product-name');
-    const productPriceInput=document.getElementById('product-price');
-    const contactInput=document.getElementById('contact');
-    const methods=document.querySelectorAll('.payment-method');
-    const paymentDetails=document.getElementById('payment-details');
-    const proofInput=document.getElementById('proof');
-    const previewImage=document.getElementById('preview-image');
-    const submitBtn=document.getElementById('submit-btn');
-    const loader=document.getElementById('loader');
-    const errorMsg=document.getElementById('error-msg');
-    const confirmation=document.getElementById('confirmation');
-    let selectedMethod=null;
-
-    function openModal(p){
-      productNameInput.value=p.name;
-      productPriceInput.value=p.price;
-      contactInput.value=''; proofInput.value=''; previewImage.style.display='none'; paymentDetails.innerHTML='';
-      methods.forEach(m=>m.classList.remove('selected'));
-      selectedMethod=null; errorMsg.style.display='none'; confirmation.style.display='none';
-      document.getElementById('form-wrapper').style.display='block'; modal.classList.add('active');
-    }
-    closeModalBtn.onclick=()=>modal.classList.remove('active');
-
-    methods.forEach(m=>m.addEventListener('click',()=>{
-      methods.forEach(x=>x.classList.remove('selected'));
-      m.classList.add('selected');
-      selectedMethod=m.getAttribute('data-method');
-      const info=paymentInfo[selectedMethod];
-      if(info.type==='text') paymentDetails.innerHTML=`<div><strong>Bayar ke:</strong> ${info.value}</div>`;
-      else paymentDetails.innerHTML=`<div><strong>Scan QR:</strong></div><img src="${info.src}" style="max-width:100%;margin-top:0.5rem;">`;
+    tabs.forEach(tab => tab.addEventListener('click', () => {
+      tabs.forEach(x => x.classList.remove('active'));
+      tab.classList.add('active');
+      currentCat = tab.getAttribute('data-cat');
+      renderProducts();
     }));
-
-    document.getElementById('upload-area').addEventListener('click',()=>proofInput.click());
-    proofInput.addEventListener('change',e=>{const f=e.target.files[0]; if(f){previewImage.src=URL.createObjectURL(f); previewImage.style.display='block';}});
-
-    async function sendToTelegram(product,price,contact,method,file){
-      const text=`Produk: ${product}\nHarga: Rp${price.toLocaleString('id')}\nKontak: ${contact}\nMetode: ${method.toUpperCase()}`;
-      await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({chat_id:TELEGRAM_CHAT_ID,text})});
-      const formData=new FormData(); formData.append('chat_id',TELEGRAM_CHAT_ID); formData.append('photo',file); formData.append('caption','Bukti Pembayaran');
-      await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendPhoto`,{method:'POST',body:formData});
+    const modal = document.getElementById('payment-modal');
+    const closeModalBtn = document.getElementById('close-modal');
+    const productNameInput = document.getElementById('product-name');
+    const productPriceInput = document.getElementById('product-price');
+    const contactInput = document.getElementById('contact');
+    const methods = document.querySelectorAll('.payment-method');
+    const paymentDetailsDiv = document.getElementById('payment-details');
+    const proofInput = document.getElementById('proof');
+    const previewImage = document.getElementById('preview-image');
+    const submitBtn = document.getElementById('submit-btn');
+    const loader = document.getElementById('loader');
+    const errorMsg = document.getElementById('error-msg');
+    const confirmation = document.getElementById('confirmation');
+    let selectedMethod = null;
+    function openModal(p) {
+      productNameInput.value = p.name;
+      productPriceInput.value = p.price;
+      contactInput.value = '';
+      methods.forEach(m => m.classList.remove('selected')); paymentDetailsDiv.innerHTML = '';
+      previewImage.style.display = 'none'; proofInput.value = '';
+      errorMsg.style.display = 'none'; confirmation.style.display = 'none';
+      modal.classList.add('active');
     }
-
-    submitBtn.addEventListener('click',async()=>{
-      const name=productNameInput.value.trim();
-      const amt=parseInt(productPriceInput.value);
-      const contact=contactInput.value.trim();
-      const proof=proofInput.files[0];
-      if(!name||!amt||!contact||!selectedMethod||!proof){ errorMsg.style.display='block'; return; }
-      errorMsg.style.display='none'; loader.style.display='block'; submitBtn.disabled=true;
-      try{ await sendToTelegram(name,amt,contact,selectedMethod,proof); }
-      catch(e){ errorMsg.textContent='Gagal kirim, coba lagi.'; errorMsg.style.display='block'; }
-      loader.style.display='none'; document.getElementById('form-wrapper').style.display='none'; confirmation.style.display='block'; submitBtn.disabled=false;
+    closeModalBtn.addEventListener('click', () => modal.classList.remove('active'));
+    methods.forEach(m => m.addEventListener('click', () => {
+      methods.forEach(x => x.classList.remove('selected'));
+      m.classList.add('selected'); selectedMethod = m.getAttribute('data-method');
+      const info = paymentInfo[selectedMethod];
+      if (info.type === 'text') {
+        paymentDetailsDiv.innerHTML = `<p>Bayar ke: <strong>${info.value}</strong></p>`;
+      } else {
+        paymentDetailsDiv.innerHTML = `<img src="${info.src}" alt="QRIS" style="max-width:100%;">`;
+      }
+    }));
+    document.getElementById('upload-area').addEventListener('click', () => proofInput.click());
+    proofInput.addEventListener('change', e => {
+      const f = e.target.files[0]; if (f) { previewImage.src = URL.createObjectURL(f); previewImage.style.display = 'block'; }
     });
-
+    async function sendToTelegram(product, price, contact, method, file) {
+      const text = `Produk: ${product}\nHarga: Rp${price.toLocaleString('id')}\nKontak: ${contact}\nMetode: ${method.toUpperCase()}`;
+      await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
+        method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ chat_id: TELEGRAM_CHAT_ID, text })
+      });
+      const formData = new FormData(); formData.append('chat_id', TELEGRAM_CHAT_ID); formData.append('photo', file); formData.append('caption', 'Bukti Pembayaran');
+      await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendPhoto`, { method: 'POST', body: formData });
+    }
+    submitBtn.addEventListener('click', async () => {
+      const name = productNameInput.value.trim(); const price = parseInt(productPriceInput.value);
+      const contact = contactInput.value.trim(); const file = proofInput.files[0];
+      if (!name || !price || !contact || !selectedMethod || !file) { errorMsg.style.display = 'block'; return; }
+      errorMsg.style.display = 'none'; loader.style.display = 'block'; submitBtn.disabled = true;
+      try {
+        await sendToTelegram(name, price, contact, selectedMethod, file);
+        confirmation.style.display = 'block';
+      } catch (e) { errorMsg.textContent = 'Gagal mengirim ke Telegram'; errorMsg.style.display = 'block'; }
+      loader.style.display = 'none'; submitBtn.disabled = false;    });
     renderProducts();
   </script></body>
 </html>
