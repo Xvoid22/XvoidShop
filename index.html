@@ -4,59 +4,499 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Panel & Script Shop</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
-    :root { --primary: #4361ee; --accent: #4cc9f0; --bg: #f5f7fd; --fg: #212529; --light: #6c757d; --radius: 8px; --transition: 0.3s ease; }
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { font-family: "Segoe UI", sans-serif; background: var(--bg); color: var(--fg); }
-    .container { max-width: 1200px; margin: auto; padding: 1rem; }
-    header { text-align: center; padding: 3rem 0; }
-    header h1 { font-size: 2.5rem; color: var(--primary); }
-    header p { color: var(--light); }
-    .tabs { display: flex; justify-content: center; gap: 1rem; margin-bottom: 2rem; }
-    .tab { padding: .5rem 1rem; background: #fff; border-radius: var(--radius); cursor: pointer; transition: background var(--transition), color var(--transition); }
-    .tab.active { background: var(--primary); color: #fff; }
-    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px,1fr)); gap: 1.5rem; }
-    .card { background: #fff; border-radius: var(--radius); box-shadow: 0 4px 12px rgba(0,0,0,0.05); overflow: hidden; transition: transform var(--transition); }
-    .card:hover { transform: translateY(-4px); }
-    .card img { width: 100%; height: 140px; object-fit: cover; }
-    .card-body { padding: 1rem; display: flex; flex-direction: column; }
-    .card-title { font-size: 1.1rem; margin-bottom: .5rem; }
-    .card-price { color: var(--accent); font-weight: bold; margin-bottom: 1rem; }
-    .btn-buy { margin-top: auto; background: var(--primary); color: #fff; border: none; padding: .6rem; border-radius: var(--radius); cursor: pointer; transition: background var(--transition); }
-    .btn-buy:hover { background: #3f37c9; }
-    .modal { position: fixed; inset: 0; background: rgba(0,0,0,0.5); display: none; align-items: center; justify-content: center; padding: 1rem; }
-    .modal.active { display: flex; }
-    .modal-content { background: #fff; border-radius: var(--radius); max-width: 500px; width: 100%; padding: 1.5rem; position: relative; }
-    .close-btn { position: absolute; top: .5rem; right: .5rem; background: none; border: none; font-size: 1.5rem; cursor: pointer; color: var(--light); }
-    .close-btn:hover { color: var(--accent); }
-    .form-group { margin-bottom: 1rem; }
-    .form-group label { display: block; margin-bottom: .25rem; font-weight: 600; }
-    .form-group input { width: 100%; padding: .6rem; border: 1px solid #ced4da; border-radius: var(--radius); transition: border var(--transition); }
-    .form-group input:focus { border-color: var(--primary); outline: none; }
-    .payment-methods { display: flex; gap: .5rem; margin-top: .5rem; }
-    .payment-method { flex: 1; text-align: center; padding: .5rem; border: 2px solid #ced4da; border-radius: var(--radius); cursor: pointer; }
-    .payment-method.selected { border-color: var(--primary); background: rgba(67,97,238,0.1); }
-    #payment-details { margin: .5rem 0 1rem; }
-    .upload-area { border: 2px dashed #ced4da; padding: 1rem; border-radius: var(--radius); text-align: center; cursor: pointer; }
-    .upload-area:hover { border-color: var(--primary); }
-    #preview-image { display: none; max-width: 100%; margin-top: .5rem; }
-    .btn-submit { width: 100%; padding: .8rem; background: var(--accent); border: none; border-radius: var(--radius); font-weight: 600; cursor: pointer; }
-    .btn-submit:hover { background: #38b8d8; }
-    .loader, .error, .confirmation { text-align: center; margin-top: 1rem; display: none; }
-    .spinner { border: 4px solid #f3f3f3; border-top: 4px solid var(--primary); border-radius: 50%; width: 30px; height: 30px; animation: spin 1s linear infinite; margin: auto; }
-    @keyframes spin { to { transform: rotate(360deg); } }
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+    
+    :root {
+      --primary: #4361ee;
+      --primary-dark: #3a56d4;
+      --accent: #4cc9f0;
+      --accent-dark: #38b8d8;
+      --bg: #f8f9fc;
+      --fg: #2d3748;
+      --light: #718096;
+      --border: #e2e8f0;
+      --card-bg: #ffffff;
+      --radius: 10px;
+      --shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.03);
+      --shadow-hover: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+      --transition: 0.3s ease;
+    }
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: var(--bg);
+      color: var(--fg);
+      line-height: 1.6;
+    }
+    
+    .container {
+      max-width: 1200px;
+      margin: auto;
+      padding: 1.5rem;
+    }
+    
+    header {
+      text-align: center;
+      padding: 3rem 0 2rem;
+      background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+      color: white;
+      border-radius: 0 0 var(--radius) var(--radius);
+      box-shadow: var(--shadow);
+      margin-bottom: 2rem;
+    }
+    
+    header h1 {
+      font-size: 2.5rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+    }
+    
+    header p {
+      opacity: 0.85;
+      font-weight: 300;
+      font-size: 1.1rem;
+    }
+    
+    .tabs {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      margin-bottom: 2.5rem;
+      flex-wrap: wrap;
+    }
+    
+    .tab {
+      padding: 0.75rem 1.5rem;
+      background: var(--card-bg);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      cursor: pointer;
+      transition: all var(--transition);
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    
+    .tab i {
+      color: var(--primary);
+    }
+    
+    .tab:hover {
+      transform: translateY(-2px);
+    }
+    
+    .tab.active {
+      background: var(--primary);
+      color: white;
+    }
+    
+    .tab.active i {
+      color: white;
+    }
+    
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 1.5rem;
+    }
+    
+    .card {
+      background: var(--card-bg);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      transition: all var(--transition);
+      border: 1px solid var(--border);
+    }
+    
+    .card:hover {
+      transform: translateY(-5px);
+      box-shadow: var(--shadow-hover);
+    }
+    
+    .card img {
+      width: 100%;
+      height: 160px;
+      object-fit: cover;
+    }
+    
+    .card-body {
+      padding: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      height: 160px;
+    }
+    
+    .card-title {
+      font-size: 1.2rem;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+      color: var(--fg);
+    }
+    
+    .card-price {
+      color: var(--primary);
+      font-weight: 700;
+      font-size: 1.3rem;
+      margin-bottom: 1.5rem;
+    }
+    
+    .btn-buy {
+      margin-top: auto;
+      background: var(--primary);
+      color: white;
+      border: none;
+      padding: 0.8rem;
+      border-radius: var(--radius);
+      cursor: pointer;
+      font-family: 'Poppins', sans-serif;
+      font-weight: 500;
+      font-size: 1rem;
+      transition: background var(--transition);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+    }
+    
+    .btn-buy:hover {
+      background: var(--primary-dark);
+    }
+    
+    .modal {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.6);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem;
+      z-index: 1000;
+      backdrop-filter: blur(4px);
+    }
+    
+    .modal.active {
+      display: flex;
+    }
+    
+    .modal-content {
+      background: var(--card-bg);
+      border-radius: var(--radius);
+      max-width: 500px;
+      width: 100%;
+      max-height: 90vh;
+      overflow-y: auto;
+      position: relative;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+      animation: modalFadeIn 0.3s ease;
+    }
+    
+    @keyframes modalFadeIn {
+      from { opacity: 0; transform: translateY(-20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    .modal-header {
+      padding: 1.5rem 1.5rem 0.5rem;
+      border-bottom: 1px solid var(--border);
+    }
+    
+    .modal-title {
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: var(--primary);
+    }
+    
+    .modal-body {
+      padding: 1.5rem;
+    }
+    
+    .close-btn {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      cursor: pointer;
+      color: var(--light);
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all var(--transition);
+    }
+    
+    .close-btn:hover {
+      background: rgba(0, 0, 0, 0.05);
+      color: var(--accent);
+    }
+    
+    .form-group {
+      margin-bottom: 1.5rem;
+    }
+    
+    .form-group label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 500;
+      color: var(--fg);
+    }
+    
+    .form-group input {
+      width: 100%;
+      padding: 0.8rem 1rem;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      transition: border var(--transition);
+      font-family: 'Poppins', sans-serif;
+      font-size: 1rem;
+    }
+    
+    .form-group input:focus {
+      border-color: var(--primary);
+      outline: none;
+      box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.15);
+    }
+    
+    .payment-methods {
+      display: flex;
+      gap: 0.8rem;
+      margin-top: 0.8rem;
+      flex-wrap: wrap;
+    }
+    
+    .payment-method {
+      flex: 1;
+      min-width: 80px;
+      text-align: center;
+      padding: 0.8rem;
+      border: 2px solid var(--border);
+      border-radius: var(--radius);
+      cursor: pointer;
+      transition: all var(--transition);
+      font-weight: 500;
+    }
+    
+    .payment-method:hover {
+      border-color: var(--primary);
+    }
+    
+    .payment-method.selected {
+      border-color: var(--primary);
+      background: rgba(67, 97, 238, 0.1);
+      color: var(--primary);
+    }
+    
+    #payment-details {
+      margin: 1rem 0;
+      padding: 1rem;
+      background: rgba(67, 97, 238, 0.05);
+      border-radius: var(--radius);
+      border: 1px dashed var(--primary);
+    }
+    
+    .upload-area {
+      border: 2px dashed var(--border);
+      padding: 2rem 1rem;
+      border-radius: var(--radius);
+      text-align: center;
+      cursor: pointer;
+      transition: all var(--transition);
+      background: rgba(67, 97, 238, 0.02);
+    }
+    
+    .upload-area:hover {
+      border-color: var(--primary);
+      background: rgba(67, 97, 238, 0.05);
+    }
+    
+    .upload-area i {
+      font-size: 2rem;
+      color: var(--light);
+      margin-bottom: 0.5rem;
+    }
+    
+    #preview-image {
+      display: none;
+      max-width: 100%;
+      margin-top: 1rem;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+    }
+    
+    .modal-footer {
+      padding: 1rem 1.5rem 1.5rem;
+      border-top: 1px solid var(--border);
+    }
+    
+    .btn-submit {
+      width: 100%;
+      padding: 1rem;
+      background: var(--accent);
+      color: white;
+      border: none;
+      border-radius: var(--radius);
+      font-weight: 600;
+      cursor: pointer;
+      font-family: 'Poppins', sans-serif;
+      font-size: 1rem;
+      transition: background var(--transition);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+    }
+    
+    .btn-submit:hover {
+      background: var(--accent-dark);
+    }
+    
+    .loader, .error, .confirmation {
+      text-align: center;
+      margin-top: 1rem;
+      display: none;
+    }
+    
+    .loader {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 1rem;
+    }
+    
+    .spinner {
+      border: 4px solid rgba(67, 97, 238, 0.1);
+      border-top: 4px solid var(--primary);
+      border-radius: 50%;
+      width: 30px;
+      height: 30px;
+      animation: spin 1s linear infinite;
+    }
+    
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+    
+    .error {
+      color: #e53e3e;
+      background: rgba(229, 62, 62, 0.1);
+      padding: 0.8rem;
+      border-radius: var(--radius);
+      font-weight: 500;
+    }
+    
+    .confirmation {
+      color: #38a169;
+      background: rgba(56, 161, 105, 0.1);
+      padding: 1rem;
+      border-radius: var(--radius);
+      font-weight: 500;
+    }
+    
+    .modal-product-info {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+      background: rgba(67, 97, 238, 0.05);
+      padding: 1rem;
+      border-radius: var(--radius);
+    }
+    
+    .modal-product-icon {
+      width: 50px;
+      height: 50px;
+      background: var(--primary);
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: var(--radius);
+      font-size: 1.5rem;
+    }
+    
+    .modal-product-details h3 {
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: var(--fg);
+    }
+    
+    .modal-product-details p {
+      color: var(--primary);
+      font-weight: 700;
+      font-size: 1.1rem;
+    }
+    
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+      .tabs {
+        gap: 0.5rem;
+      }
+      
+      .tab {
+        padding: 0.6rem 1rem;
+        font-size: 0.9rem;
+      }
+      
+      .card-body {
+        padding: 1rem;
+      }
+      
+      .modal-content {
+        max-width: 95%;
+      }
+    }
+
+    /* Scroll styling */
+    .modal-content::-webkit-scrollbar {
+      width: 8px;
+    }
+    
+    .modal-content::-webkit-scrollbar-track {
+      background: rgba(0, 0, 0, 0.05);
+      border-radius: 10px;
+    }
+    
+    .modal-content::-webkit-scrollbar-thumb {
+      background: rgba(67, 97, 238, 0.3);
+      border-radius: 10px;
+    }
+    
+    .modal-content::-webkit-scrollbar-thumb:hover {
+      background: rgba(67, 97, 238, 0.5);
+    }
+
+    /* Additional style for input file */
+    input[type="file"] {
+      display: none;
+    }
   </style>
 </head>
 <body>
-  <header class="container">
-    <h1>Panel & Script Shop</h1>
-    <p>Pilih kategori untuk mulai belanja</p>
+  <header>
+    <div class="container">
+      <h1>Panel & Script Shop</h1>
+      <p>Pilih kategori untuk mulai belanja</p>
+    </div>
   </header>
+  
   <div class="container">
     <div class="tabs">
-      <div class="tab active" data-cat="panel">Panel Hosting</div>
-      <div class="tab" data-cat="bot">Script Bot</div>
-      <div class="tab" data-cat="vvip">PT VVIP</div>
+      <div class="tab active" data-cat="panel"><i class="fas fa-server"></i> Panel Hosting</div>
+      <div class="tab" data-cat="bot"><i class="fas fa-robot"></i> Script Bot</div>
+      <div class="tab" data-cat="vvip"><i class="fas fa-crown"></i> PT VVIP</div>
     </div>
     <div class="grid" id="product-grid"></div>
   </div>
@@ -64,29 +504,70 @@
   <!-- Modal Pembayaran -->
   <div class="modal" id="payment-modal">
     <div class="modal-content">
-      <button class="close-btn" id="close-modal">&times;</button>
-      <div id="form-wrapper">
-        <div class="form-group"><label>Produk</label><input type="text" id="product-name" readonly></div>
-        <div class="form-group"><label>Harga (Rp)</label><input type="text" id="product-price" readonly></div>
-        <div class="form-group"><label>Kontak (HP/Telegram)</label><input type="text" id="contact" placeholder="0812xxxxx atau @username"></div>
-        <div class="form-group">
-          <label>Metode Pembayaran</label>
-          <div class="payment-methods">
-            <div class="payment-method" data-method="dana">DANA</div>
-            <div class="payment-method" data-method="gopay">GoPay</div>
-            <div class="payment-method" data-method="qris">QRIS</div>
+      <div class="modal-header">
+        <h2 class="modal-title">Form Pembayaran</h2>
+        <button class="close-btn" id="close-modal"><i class="fas fa-times"></i></button>
+      </div>
+      
+      <div class="modal-body">
+        <div id="form-wrapper">
+          <div class="modal-product-info">
+            <div class="modal-product-icon">
+              <i class="fas fa-shopping-cart"></i>
+            </div>
+            <div class="modal-product-details">
+              <h3 id="product-name-display">Panel 1 GB</h3>
+              <p id="product-price-display">Rp10,000</p>
+            </div>
           </div>
-          <div id="payment-details"></div>
+          
+          <div class="form-group">
+            <label><i class="fas fa-shopping-bag"></i> Produk</label>
+            <input type="text" id="product-name" readonly>
+          </div>
+          
+          <div class="form-group">
+            <label><i class="fas fa-tag"></i> Harga (Rp)</label>
+            <input type="text" id="product-price" readonly>
+          </div>
+          
+          <div class="form-group">
+            <label><i class="fas fa-address-book"></i> Kontak (HP/Telegram)</label>
+            <input type="text" id="contact" placeholder="0812xxxxx atau @username">
+          </div>
+          
+          <div class="form-group">
+            <label><i class="fas fa-money-bill"></i> Metode Pembayaran</label>
+            <div class="payment-methods">
+              <div class="payment-method" data-method="dana">DANA</div>
+              <div class="payment-method" data-method="gopay">GoPay</div>
+              <div class="payment-method" data-method="qris">QRIS</div>
+            </div>
+            <div id="payment-details"></div>
+          </div>
+          
+          <div class="form-group upload-area" id="upload-area">
+            <i class="fas fa-cloud-upload-alt"></i>
+            <p>Klik untuk unggah bukti pembayaran</p>
+            <input type="file" id="proof" accept="image/*">
+            <img id="preview-image" alt="Preview">
+          </div>
+          
+          <div class="error" id="error-msg">Lengkapi semua data!</div>
+          <div class="loader" id="loader">
+            <div class="spinner"></div>
+            <p>Memproses...</p>
+          </div>
+          <div class="confirmation" id="confirmation">
+            <p><i class="fas fa-check-circle"></i> Pembayaran berhasil terkirim!</p>
+          </div>
         </div>
-        <div class="form-group upload-area" id="upload-area">
-          <p>Klik untuk unggah bukti pembayaran</p>
-          <input type="file" id="proof" accept="image/*">
-          <img id="preview-image" alt="Preview">
-        </div>
-        <div class="error" id="error-msg">Lengkapi semua data!</div>
-        <div class="loader" id="loader"><div class="spinner"></div><p>Memproses...</p></div>
-        <button class="btn-submit" id="submit-btn">Kirim Pembayaran</button>
-        <div class="confirmation" id="confirmation"><p>Pembayaran berhasil terkirim!</p></div>
+      </div>
+      
+      <div class="modal-footer">
+        <button class="btn-submit" id="submit-btn">
+          <i class="fas fa-paper-plane"></i> Kirim Pembayaran
+        </button>
       </div>
     </div>
   </div>
@@ -94,58 +575,67 @@
   <script>
     const TELEGRAM_BOT_TOKEN = '7567845460:AAFPXLrafKx1ZswhrUyXKSP6Oa3MsyX3Pew';
     const TELEGRAM_CHAT_ID = '8050058475';
+    
     const paymentInfo = {
-      dana: { type: 'text', value: '082112345678' },
-      gopay: { type: 'text', value: '082298765432' },
-      qris: { type: 'image', src: 'https://via.placeholder.com/150?text=QRIS' }
+      dana: { type: 'text', value: '083141280525' },
+      gopay: { type: 'text', value: '-' },
+      qris: { type: 'image', src: 'https://files.catbox.moe/kalveu.jpg' }
     };
+    
     const products = [
-      { name:'Panel 1GB', price:10000, cat:'panel' },
-      { name:'Panel 2GB', price:20000, cat:'panel' },
-      { name:'Panel 3GB', price:30000, cat:'panel' },
-      { name:'Panel 4GB', price:40000, cat:'panel' },
-      { name:'Panel 5GB', price:50000, cat:'panel' },
-      { name:'Panel 6GB', price:60000, cat:'panel' },
-      { name:'Panel 7GB', price:70000, cat:'panel' },
-      { name:'Panel 8GB', price:80000, cat:'panel' },
-      { name:'Panel 9GB', price:90000, cat:'panel' },
-      { name:'Panel 10GB', price:100000, cat:'panel' },
-      { name:'Panel Unlimited', price:150000, cat:'panel' },
-      { name:'SC BOT V1', price:20000, cat:'bot' },
-      { name:'SC BOT V2', price:30000, cat:'bot' },
-      { name:'SC BOT V3', price:40000, cat:'bot' },
-      { name:'Admin Panel', price:50000, cat:'bot' },
-      { name:'Owner Panel PT Panel', price:100000, cat:'bot' },
-      { name:'PT VVIP', price:50000, cat:'vvip' }
+      { name:'Panel 1GB', price:10000, cat:'panel', icon:'fas fa-server' },
+      { name:'Panel 2GB', price:20000, cat:'panel', icon:'fas fa-server' },
+      { name:'Panel 3GB', price:30000, cat:'panel', icon:'fas fa-server' },
+      { name:'Panel 4GB', price:40000, cat:'panel', icon:'fas fa-server' },
+      { name:'Panel 5GB', price:50000, cat:'panel', icon:'fas fa-server' },
+      { name:'Panel 6GB', price:60000, cat:'panel', icon:'fas fa-server' },
+      { name:'Panel 7GB', price:70000, cat:'panel', icon:'fas fa-server' },
+      { name:'Panel 8GB', price:80000, cat:'panel', icon:'fas fa-server' },
+      { name:'Panel 9GB', price:90000, cat:'panel', icon:'fas fa-server' },
+      { name:'Panel 10GB', price:100000, cat:'panel', icon:'fas fa-server' },
+      { name:'Panel Unlimited', price:150000, cat:'panel', icon:'fas fa-infinity' },
+      { name:'Admin Panel', price:50000, cat:'panel', icon:'fas fa-user-shield' },
+      { name:'PT Panel', price:100000, cat:'panel', icon:'fas fa-user-tie' },
+      { name:'SC BOT V1', price:20000, cat:'bot', icon:'fas fa-robot' },
+      { name:'SC BOT V2', price:30000, cat:'bot', icon:'fas fa-robot' },
+      { name:'SC BOT V3', price:40000, cat:'bot', icon:'fas fa-robot' },
+      { name:'PT VVIP', price:50000, cat:'vvip', icon:'fas fa-crown' }
     ];
+    
     const grid = document.getElementById('product-grid');
     const tabs = document.querySelectorAll('.tab');
     let currentCat = 'panel';
+    
     function renderProducts() {
       grid.innerHTML = '';
       products.filter(p => p.cat === currentCat).forEach(p => {
-        const card = document.createElement('div'); card.className = 'card';
+        const card = document.createElement('div'); 
+        card.className = 'card';
         card.innerHTML = `
-          <img src="https://via.placeholder.com/400x140?text=${encodeURIComponent(p.name)}">
+          <img src="https://via.placeholder.com/400x160?text=${encodeURIComponent(p.name)}">
           <div class="card-body">
             <div class="card-title">${p.name}</div>
             <div class="card-price">Rp${p.price.toLocaleString('id')}</div>
-            <button class="btn-buy">Beli Sekarang</button>
+            <button class="btn-buy"><i class="fas fa-shopping-cart"></i> Beli Sekarang</button>
           </div>`;
         card.querySelector('.btn-buy').addEventListener('click', () => openModal(p));
         grid.appendChild(card);
       });
     }
+    
     tabs.forEach(tab => tab.addEventListener('click', () => {
       tabs.forEach(x => x.classList.remove('active'));
       tab.classList.add('active');
       currentCat = tab.getAttribute('data-cat');
       renderProducts();
     }));
+    
     const modal = document.getElementById('payment-modal');
     const closeModalBtn = document.getElementById('close-modal');
     const productNameInput = document.getElementById('product-name');
     const productPriceInput = document.getElementById('product-price');
+    const productNameDisplay = document.getElementById('product-name-display');
+    const productPriceDisplay = document.getElementById('product-price-display');
     const contactInput = document.getElementById('contact');
     const methods = document.querySelectorAll('.payment-method');
     const paymentDetailsDiv = document.getElementById('payment-details');
@@ -156,48 +646,103 @@
     const errorMsg = document.getElementById('error-msg');
     const confirmation = document.getElementById('confirmation');
     let selectedMethod = null;
+    
     function openModal(p) {
       productNameInput.value = p.name;
       productPriceInput.value = p.price;
+      productNameDisplay.textContent = p.name;
+      productPriceDisplay.textContent = `Rp${p.price.toLocaleString('id')}`;
       contactInput.value = '';
-      methods.forEach(m => m.classList.remove('selected')); paymentDetailsDiv.innerHTML = '';
-      previewImage.style.display = 'none'; proofInput.value = '';
-      errorMsg.style.display = 'none'; confirmation.style.display = 'none';
+      methods.forEach(m => m.classList.remove('selected')); 
+      paymentDetailsDiv.innerHTML = '';
+      previewImage.style.display = 'none'; 
+      proofInput.value = '';
+      errorMsg.style.display = 'none'; 
+      confirmation.style.display = 'none';
       modal.classList.add('active');
     }
+    
     closeModalBtn.addEventListener('click', () => modal.classList.remove('active'));
+    
+    // Close modal when clicking outside the modal content
+    modal.addEventListener('click', (e) => {
+      if (e.target === modal) {
+        modal.classList.remove('active');
+      }
+    });
+    
     methods.forEach(m => m.addEventListener('click', () => {
       methods.forEach(x => x.classList.remove('selected'));
-      m.classList.add('selected'); selectedMethod = m.getAttribute('data-method');
+      m.classList.add('selected'); 
+      selectedMethod = m.getAttribute('data-method');
       const info = paymentInfo[selectedMethod];
       if (info.type === 'text') {
         paymentDetailsDiv.innerHTML = `<p>Bayar ke: <strong>${info.value}</strong></p>`;
       } else {
-        paymentDetailsDiv.innerHTML = `<img src="${info.src}" alt="QRIS" style="max-width:100%;">`;
+        paymentDetailsDiv.innerHTML = `<img src="${info.src}" alt="QRIS" style="max-width:100%; border-radius:8px;">`;
       }
     }));
+    
     document.getElementById('upload-area').addEventListener('click', () => proofInput.click());
+    
     proofInput.addEventListener('change', e => {
-      const f = e.target.files[0]; if (f) { previewImage.src = URL.createObjectURL(f); previewImage.style.display = 'block'; }
+      const f = e.target.files[0]; 
+      if (f) { 
+        previewImage.src = URL.createObjectURL(f); 
+        previewImage.style.display = 'block'; 
+      }
     });
+    
     async function sendToTelegram(product, price, contact, method, file) {
       const text = `Produk: ${product}\nHarga: Rp${price.toLocaleString('id')}\nKontak: ${contact}\nMetode: ${method.toUpperCase()}`;
       await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
-        method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ chat_id: TELEGRAM_CHAT_ID, text })
+        method: 'POST', 
+        headers: { 'Content-Type': 'application/json' }, 
+        body: JSON.stringify({ chat_id: TELEGRAM_CHAT_ID, text })
       });
-      const formData = new FormData(); formData.append('chat_id', TELEGRAM_CHAT_ID); formData.append('photo', file); formData.append('caption', 'Bukti Pembayaran');
-      await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendPhoto`, { method: 'POST', body: formData });
+      
+      const formData = new FormData(); 
+      formData.append('chat_id', TELEGRAM_CHAT_ID); 
+      formData.append('photo', file); 
+      formData.append('caption', 'Bukti Pembayaran');
+      
+      await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendPhoto`, { 
+        method: 'POST', 
+        body: formData 
+      });
     }
+    
     submitBtn.addEventListener('click', async () => {
-      const name = productNameInput.value.trim(); const price = parseInt(productPriceInput.value);
-      const contact = contactInput.value.trim(); const file = proofInput.files[0];
-      if (!name || !price || !contact || !selectedMethod || !file) { errorMsg.style.display = 'block'; return; }
-      errorMsg.style.display = 'none'; loader.style.display = 'block'; submitBtn.disabled = true;
+      const name = productNameInput.value.trim(); 
+      const price = parseInt(productPriceInput.value);
+      const contact = contactInput.value.trim(); 
+      const file = proofInput.files[0];
+      
+      if (!name || !price || !contact || !selectedMethod || !file) { 
+        errorMsg.style.display = 'block'; 
+        return; 
+      }
+      
+      errorMsg.style.display = 'none'; 
+      loader.style.display = 'block'; 
+      submitBtn.disabled = true;
+      
       try {
         await sendToTelegram(name, price, contact, selectedMethod, file);
+        loader.style.display = 'none';
         confirmation.style.display = 'block';
-      } catch (e) { errorMsg.textContent = 'Gagal mengirim ke Telegram'; errorMsg.style.display = 'block'; }
-      loader.style.display = 'none'; submitBtn.disabled = false;    });
+        setTimeout(() => {
+          modal.classList.remove('active');
+        }, 3000);
+      } catch (e) { 
+        errorMsg.textContent = 'Gagal mengirim ke Telegram'; 
+        errorMsg.style.display = 'block'; 
+        loader.style.display = 'none';
+      }
+      
+      submitBtn.disabled = false;
+    });
+    
     renderProducts();
   </script>
 </body>
