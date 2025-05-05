@@ -3,18 +3,19 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>BarMod Store - Hosting & Bot Scripts</title>
+  <title>LegendStore - Panel & Script Bot Premium</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
   <style>
     :root {
       --primary: #4361ee;
       --secondary: #3f37c9;
-      --accent: #4cc9f0;
+      --accent: #f72585;
       --light: #f8f9fa;
       --dark: #212529;
       --success: #4cc9f0;
       --danger: #f72585;
-      --gradient: linear-gradient(135deg, #4361ee, #3a0ca3);
+      --card-bg: #ffffff;
+      --bg-color: #f5f7fd;
     }
     
     * {
@@ -25,74 +26,78 @@
     }
     
     body {
-      background-color: #f5f7fd;
+      background-color: var(--bg-color);
       color: var(--dark);
     }
     
     .container {
       max-width: 1200px;
       margin: 0 auto;
-      padding: 0 1rem;
+      padding: 0 20px;
     }
     
-    /* Navigation */
+    /* Header Styles */
     header {
-      background: var(--gradient);
-      padding: 1rem 0;
+      background-color: #fff;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
       position: sticky;
       top: 0;
       z-index: 100;
-      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
     }
     
     .navbar {
       display: flex;
       justify-content: space-between;
       align-items: center;
+      padding: 1rem 0;
     }
     
     .logo {
-      color: white;
-      font-size: 1.5rem;
+      font-size: 1.8rem;
       font-weight: 700;
+      color: var(--primary);
       text-decoration: none;
       display: flex;
       align-items: center;
-      gap: 0.5rem;
     }
     
     .logo i {
-      font-size: 1.8rem;
+      margin-right: 10px;
     }
     
     .nav-links {
       display: flex;
-      gap: 1.5rem;
+      list-style: none;
+    }
+    
+    .nav-links li {
+      margin-left: 2rem;
     }
     
     .nav-links a {
-      color: white;
       text-decoration: none;
-      font-weight: 500;
+      color: var(--dark);
+      font-weight: 600;
       transition: color 0.3s ease;
     }
     
     .nav-links a:hover {
-      color: var(--accent);
+      color: var(--primary);
     }
     
     .menu-toggle {
       display: none;
-      color: white;
       font-size: 1.5rem;
       cursor: pointer;
     }
     
     /* Hero Section */
     .hero {
-      background: var(--gradient);
-      padding: 4rem 0;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
       color: white;
+      padding: 4rem 0;
+      border-radius: 0 0 20px 20px;
+      margin-bottom: 3rem;
       text-align: center;
     }
     
@@ -108,145 +113,163 @@
       opacity: 0.9;
     }
     
-    .cta-button {
+    .btn {
       display: inline-block;
-      background: white;
-      color: var(--primary);
+      background-color: var(--accent);
+      color: white;
       padding: 0.8rem 2rem;
-      border-radius: 50px;
+      font-size: 1rem;
       font-weight: 600;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background-color 0.3s ease, transform 0.2s ease;
       text-decoration: none;
-      transition: all 0.3s ease;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     }
     
-    .cta-button:hover {
+    .btn:hover {
+      background-color: #e5116f;
       transform: translateY(-3px);
-      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
     }
     
-    /* Category Navigation */
-    .category-nav {
-      background: white;
-      padding: 1rem 0;
-      border-bottom: 1px solid #eee;
+    /* Category Tabs */
+    .category-tabs {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 15px;
       margin-bottom: 2rem;
     }
     
-    .category-list {
-      display: flex;
-      justify-content: center;
-      gap: 1.5rem;
-      list-style: none;
-      flex-wrap: wrap;
-    }
-    
-    .category-list li a {
-      text-decoration: none;
-      color: var(--dark);
-      font-weight: 500;
-      padding: 0.5rem 1rem;
+    .category-tab {
+      padding: 0.7rem 1.5rem;
+      background-color: #fff;
       border-radius: 50px;
+      font-weight: 600;
+      cursor: pointer;
       transition: all 0.3s ease;
+      border: 2px solid transparent;
     }
     
-    .category-list li a:hover, .category-list li a.active {
-      background: var(--primary);
+    .category-tab.active {
+      background-color: var(--primary);
       color: white;
     }
     
-    /* Products Section */
-    .products-section {
-      padding: 2rem 0;
+    .category-tab:hover:not(.active) {
+      border-color: var(--primary);
+      color: var(--primary);
     }
     
+    /* Product Section */
     .section-title {
       text-align: center;
       margin-bottom: 2rem;
+      position: relative;
+      padding-bottom: 15px;
     }
     
-    .section-title h2 {
-      color: var(--primary);
-      font-size: 2rem;
-      margin-bottom: 0.5rem;
+    .section-title:after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 70px;
+      height: 4px;
+      background-color: var(--primary);
+      border-radius: 10px;
     }
     
     .products-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
       gap: 2rem;
+      margin-bottom: 4rem;
     }
     
     .product-card {
-      background: white;
+      background-color: var(--card-bg);
       border-radius: 15px;
       overflow: hidden;
-      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
       transition: transform 0.3s ease, box-shadow 0.3s ease;
     }
     
     .product-card:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+      transform: translateY(-10px);
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
     }
     
     .product-image {
-      height: 180px;
-      width: 100%;
-      background: var(--gradient);
+      height: 200px;
+      background-color: #f7f9fc;
       display: flex;
       align-items: center;
       justify-content: center;
-      color: white;
-      font-size: 3rem;
+      overflow: hidden;
     }
     
-    .product-details {
+    .product-image i {
+      font-size: 4rem;
+      color: var(--primary);
+    }
+    
+    .product-info {
       padding: 1.5rem;
     }
     
-    .product-title {
+    .product-info h3 {
       font-size: 1.2rem;
       margin-bottom: 0.5rem;
       color: var(--dark);
     }
     
-    .product-description {
-      color: #6c757d;
-      margin-bottom: 1rem;
-      font-size: 0.9rem;
-    }
-    
-    .product-price {
-      color: var(--primary);
+    .product-info .price {
+      font-size: 1.3rem;
       font-weight: 700;
-      font-size: 1.5rem;
+      color: var(--primary);
       margin-bottom: 1rem;
+      display: block;
     }
     
-    .product-card .btn {
-      background: var(--primary);
+    .product-info .price small {
+      font-size: 0.9rem;
+      font-weight: normal;
+      opacity: 0.7;
+    }
+    
+    .product-info .description {
+      color: #6c757d;
+      margin-bottom: 1.5rem;
+      font-size: 0.95rem;
+      line-height: 1.5;
+    }
+    
+    .buy-btn {
+      width: 100%;
+      padding: 0.8rem;
+      text-align: center;
+      background-color: var(--primary);
       color: white;
-      padding: 0.7rem 1.5rem;
       border: none;
       border-radius: 8px;
       font-weight: 600;
       cursor: pointer;
-      transition: background 0.3s ease;
-      text-decoration: none;
-      display: inline-block;
-      width: 100%;
-      text-align: center;
+      transition: background-color 0.3s ease;
     }
     
-    .product-card .btn:hover {
-      background: var(--secondary);
+    .buy-btn:hover {
+      background-color: var(--secondary);
     }
     
     /* Features Section */
-    .features-section {
+    .features {
       padding: 4rem 0;
-      background: white;
+      background-color: white;
+      margin: 3rem 0;
+      border-radius: 20px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
     }
     
     .features-grid {
@@ -258,8 +281,7 @@
     .feature-card {
       text-align: center;
       padding: 2rem 1.5rem;
-      border-radius: 15px;
-      background: var(--light);
+      border-radius: 10px;
       transition: transform 0.3s ease;
     }
     
@@ -267,81 +289,92 @@
       transform: translateY(-5px);
     }
     
-    .feature-icon {
-      font-size: 2.5rem;
+    .feature-card i {
+      font-size: 3rem;
       color: var(--primary);
+      margin-bottom: 1.5rem;
+    }
+    
+    .feature-card h3 {
       margin-bottom: 1rem;
     }
     
-    .feature-title {
-      font-size: 1.2rem;
-      margin-bottom: 0.5rem;
-      color: var(--dark);
-    }
-    
-    .feature-description {
+    .feature-card p {
       color: #6c757d;
-      font-size: 0.9rem;
+      line-height: 1.6;
     }
     
     /* Testimonials */
-    .testimonials-section {
+    .testimonials {
       padding: 4rem 0;
-      background: #f5f7fd;
     }
     
-    .testimonials-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    .testimonial-slider {
+      display: flex;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
       gap: 2rem;
+      padding: 1rem 0.5rem;
+      margin: 0 -0.5rem;
+      scrollbar-width: none;
+    }
+    
+    .testimonial-slider::-webkit-scrollbar {
+      display: none;
     }
     
     .testimonial-card {
-      background: white;
+      flex: 0 0 auto;
+      width: calc(33.333% - 2rem);
+      min-width: 280px;
+      scroll-snap-align: start;
+      background-color: white;
       padding: 2rem;
       border-radius: 15px;
       box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
     }
     
-    .testimonial-content {
-      font-style: italic;
-      margin-bottom: 1.5rem;
-      color: #6c757d;
-    }
-    
-    .testimonial-author {
+    .testimonial-header {
       display: flex;
       align-items: center;
-      gap: 1rem;
+      margin-bottom: 1.5rem;
     }
     
     .testimonial-avatar {
-      width: 50px;
-      height: 50px;
+      width: 60px;
+      height: 60px;
       border-radius: 50%;
-      background: var(--gradient);
+      background-color: #e9ecef;
       display: flex;
       align-items: center;
       justify-content: center;
-      color: white;
-      font-weight: 700;
+      margin-right: 1rem;
     }
     
-    .testimonial-name {
-      font-weight: 600;
-      color: var(--dark);
+    .testimonial-avatar i {
+      font-size: 1.5rem;
+      color: var(--primary);
     }
     
-    .testimonial-role {
-      font-size: 0.9rem;
+    .testimonial-author h4 {
+      margin-bottom: 0.3rem;
+    }
+    
+    .testimonial-stars {
+      color: #ffc107;
+      margin-top: 0.3rem;
+    }
+    
+    .testimonial-text {
       color: #6c757d;
+      line-height: 1.6;
     }
     
     /* Footer */
     footer {
-      background: var(--dark);
+      background-color: var(--dark);
       color: white;
-      padding: 3rem 0 1.5rem;
+      padding: 4rem 0 2rem;
     }
     
     .footer-content {
@@ -352,20 +385,19 @@
     }
     
     .footer-column h3 {
-      font-size: 1.2rem;
       margin-bottom: 1.5rem;
       position: relative;
-      padding-bottom: 0.5rem;
+      padding-bottom: 10px;
     }
     
-    .footer-column h3::after {
+    .footer-column h3:after {
       content: '';
       position: absolute;
       bottom: 0;
       left: 0;
-      width: 50px;
-      height: 2px;
-      background: var(--primary);
+      width: 40px;
+      height: 3px;
+      background-color: var(--primary);
     }
     
     .footer-links {
@@ -377,127 +409,299 @@
     }
     
     .footer-links a {
-      color: #adb5bd;
+      color: #e9ecef;
       text-decoration: none;
       transition: color 0.3s ease;
     }
     
     .footer-links a:hover {
-      color: white;
+      color: var(--primary);
     }
     
     .social-links {
       display: flex;
-      gap: 1rem;
+      gap: 15px;
       margin-top: 1rem;
     }
     
     .social-links a {
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
-      background: rgba(255, 255, 255, 0.1);
       display: flex;
       align-items: center;
       justify-content: center;
+      width: 40px;
+      height: 40px;
+      background-color: rgba(255, 255, 255, 0.1);
+      border-radius: 50%;
       color: white;
-      transition: background 0.3s ease;
+      transition: all 0.3s ease;
     }
     
     .social-links a:hover {
-      background: var(--primary);
+      background-color: var(--primary);
+      transform: translateY(-3px);
     }
     
-    .copyright {
+    .footer-bottom {
       text-align: center;
-      padding-top: 1.5rem;
+      padding-top: 2rem;
       border-top: 1px solid rgba(255, 255, 255, 0.1);
-      color: #adb5bd;
-      font-size: 0.9rem;
     }
     
     /* Payment Modal */
     .modal {
       display: none;
       position: fixed;
-      z-index: 1000;
-      left: 0;
       top: 0;
+      left: 0;
       width: 100%;
       height: 100%;
-      overflow: auto;
-      background-color: rgba(0, 0, 0, 0.6);
+      background-color: rgba(0, 0, 0, 0.5);
+      z-index: 1000;
+      overflow-y: auto;
+      padding: 2rem 0;
     }
     
-    .modal-content {
-      background-color: white;
-      margin: 10% auto;
+    .modal-container {
       max-width: 800px;
+      margin: 2rem auto;
+      padding: 2rem;
+      background: white;
       border-radius: 15px;
-      box-shadow: 0 5px 30px rgba(0, 0, 0, 0.3);
-      animation: modalopen 0.5s;
-      overflow: hidden;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+      position: relative;
     }
     
-    @keyframes modalopen {
-      from {opacity: 0; transform: translateY(-50px);}
-      to {opacity: 1; transform: translateY(0);}
+    .close-modal {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      font-size: 1.5rem;
+      color: #6c757d;
+      cursor: pointer;
+      transition: color 0.3s ease;
+    }
+    
+    .close-modal:hover {
+      color: var(--primary);
     }
     
     .modal-header {
-      background: var(--gradient);
-      color: white;
-      padding: 1.5rem;
+      text-align: center;
+      margin-bottom: 2rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid #eee;
     }
     
     .modal-header h2 {
-      margin: 0;
-      font-size: 1.5rem;
+      color: var(--primary);
+      margin-bottom: 0.5rem;
     }
     
-    .close {
-      color: white;
-      float: right;
-      font-size: 1.8rem;
-      font-weight: bold;
+    .product-summary {
+      background-color: #f8f9fa;
+      padding: 1.5rem;
+      border-radius: 8px;
+      margin-bottom: 2rem;
+    }
+    
+    .product-summary h3 {
+      margin-bottom: 1rem;
+      color: var(--dark);
+    }
+    
+    .summary-row {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 0.5rem;
+    }
+    
+    .summary-row.total {
+      margin-top: 1rem;
+      padding-top: 1rem;
+      border-top: 1px solid #dee2e6;
+      font-weight: 700;
+      font-size: 1.2rem;
+    }
+    
+    /* Payment specific styles */
+    .form-group {
+      margin-bottom: 1.5rem;
+    }
+    
+    .form-group label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 600;
+      color: var(--dark);
+    }
+    
+    .form-control {
+      width: 100%;
+      padding: 0.75rem;
+      font-size: 1rem;
+      border: 1px solid #ced4da;
+      border-radius: 8px;
+      transition: border-color 0.15s ease-in-out;
+    }
+    
+    .form-control:focus {
+      border-color: var(--primary);
+      outline: none;
+    }
+    
+    .payment-methods {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 10px;
+    }
+    
+    .payment-method {
+      flex: 1;
+      min-width: 120px;
+      text-align: center;
+      border: 2px solid #ced4da;
+      border-radius: 8px;
+      padding: 1rem;
       cursor: pointer;
-      margin-top: -5px;
+      transition: all 0.3s ease;
     }
     
-    .close:hover {
-      color: var(--accent);
+    .payment-method:hover {
+      border-color: var(--primary);
     }
     
-    .modal-body {
+    .payment-method.selected {
+      border-color: var(--primary);
+      background-color: rgba(67, 97, 238, 0.1);
+    }
+    
+    .payment-method img {
+      height: 40px;
+      margin-bottom: 10px;
+    }
+    
+    .payment-details {
+      background-color: #f8f9fa;
+      padding: 1rem;
+      border-radius: 8px;
+      margin-top: 1rem;
+      display: none;
+    }
+    
+    .payment-details.active {
+      display: block;
+    }
+    
+    .upload-area {
+      border: 2px dashed #ced4da;
       padding: 2rem;
+      text-align: center;
+      border-radius: 8px;
+      margin-bottom: 1.5rem;
+      cursor: pointer;
+      transition: border-color 0.3s ease;
     }
     
-    /* Responsive Design */
+    .upload-area:hover {
+      border-color: var(--primary);
+    }
+    
+    .upload-area i {
+      font-size: 2rem;
+      color: #6c757d;
+      margin-bottom: 1rem;
+    }
+    
+    #preview-image {
+      max-width: 100%;
+      margin-top: 1rem;
+      border-radius: 8px;
+      display: none;
+    }
+    
+    .confirmation {
+      text-align: center;
+      display: none;
+    }
+    
+    .confirmation i {
+      font-size: 4rem;
+      color: var(--success);
+      margin-bottom: 1rem;
+    }
+    
+    .loader {
+      display: none;
+      text-align: center;
+      margin: 1rem 0;
+    }
+    
+    .spinner {
+      border: 5px solid #f3f3f3;
+      border-top: 5px solid var(--primary);
+      border-radius: 50%;
+      width: 50px;
+      height: 50px;
+      animation: spin 1s linear infinite;
+      margin: 0 auto;
+    }
+    
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    
+    .error-message {
+      color: var(--danger);
+      text-align: center;
+      margin: 1rem 0;
+      display: none;
+    }
+    
+    /* Category Sections */
+    .category-section {
+      display: none;
+    }
+    
+    .category-section.active {
+      display: block;
+    }
+    
+    /* Responsive Styles */
+    @media (max-width: 992px) {
+      .testimonial-card {
+        width: calc(50% - 2rem);
+      }
+    }
+    
     @media (max-width: 768px) {
+      .navbar {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      
       .nav-links {
         display: none;
-        position: absolute;
-        top: 60px;
-        left: 0;
-        width: 100%;
-        background: var(--primary);
         flex-direction: column;
-        padding: 1rem 0;
-        gap: 0;
+        width: 100%;
+        margin-top: 1rem;
       }
       
       .nav-links.active {
         display: flex;
       }
       
-      .nav-links a {
-        padding: 1rem 2rem;
-        display: block;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      .nav-links li {
+        margin: 1rem 0;
+        margin-left: 0;
       }
       
       .menu-toggle {
         display: block;
+        position: absolute;
+        top: 1rem;
+        right: 1rem;
       }
       
       .hero h1 {
@@ -508,321 +712,222 @@
         font-size: 1rem;
       }
       
-      .category-list {
-        flex-wrap: nowrap;
-        overflow-x: auto;
-        padding-bottom: 1rem;
-        justify-content: flex-start;
+      .testimonial-card {
+        width: 100%;
       }
       
-      .category-list li {
-        flex: 0 0 auto;
+      .modal-container {
+        margin: 1rem;
+        padding: 1rem;
+      }
+    }
+    
+    @media (max-width: 480px) {
+      .products-grid {
+        grid-template-columns: 1fr;
       }
       
-      .modal-content {
-        margin: 20% auto 10%;
-        width: 90%;
+      .feature-card {
+        padding: 1.5rem 1rem;
+      }
+      
+      .category-tab {
+        padding: 0.5rem 1rem;
+        font-size: 0.9rem;
       }
     }
   </style>
 </head>
 <body>
-  <!-- Navigation -->
+  <!-- Header -->
   <header>
     <div class="container">
       <nav class="navbar">
         <a href="#" class="logo">
-          <i class="fas fa-server"></i>
-          BarMod Store
+          <i class="fas fa-bolt"></i> LegendStore
         </a>
-        <div class="nav-links" id="navLinks">
-          <a href="#hosting">Hosting</a>
-          <a href="#panel">Panel</a>
-          <a href="#botscripts">Bot Scripts</a>
-          <a href="#testimonials">Testimonials</a>
-          <a href="#contact">Contact</a>
-        </div>
-        <div class="menu-toggle" id="menuToggle">
+        <div class="menu-toggle" id="menu-toggle">
           <i class="fas fa-bars"></i>
         </div>
+        <ul class="nav-links" id="nav-links">
+          <li><a href="#beranda">Beranda</a></li>
+          <li><a href="#produk">Produk</a></li>
+          <li><a href="#fitur">Fitur</a></li>
+          <li><a href="#testimoni">Testimoni</a></li>
+        </ul>
       </nav>
     </div>
   </header>
-
+  
   <!-- Hero Section -->
-  <section class="hero">
+  <section class="hero" id="beranda">
     <div class="container">
-      <h1>Solusi Digital Terbaik untuk Kebutuhan Anda</h1>
-      <p>Kami menyediakan layanan hosting terbaik dan script bot berkualitas untuk membantu Anda mengembangkan bisnis digital dengan mudah dan efisien.</p>
-      <a href="#products" class="cta-button">Lihat Produk</a>
+      <h1>Panel Hosting & Script Bot Premium</h1>
+      <p>Solusi lengkap untuk kebutuhan hosting dan otomatisasi. Dapatkan panel dengan performa tinggi dan script bot terbaik untuk bisnis Anda.</p>
+      <a href="#produk" class="btn">Lihat Produk <i class="fas fa-arrow-right"></i></a>
     </div>
   </section>
-
-  <!-- Category Navigation -->
-  <nav class="category-nav">
-    <div class="container">
-      <ul class="category-list">
-        <li><a href="#all" class="active" onclick="filterProducts('all')">Semua Produk</a></li>
-        <li><a href="#hosting" onclick="filterProducts('hosting')">Hosting</a></li>
-        <li><a href="#panel" onclick="filterProducts('panel')">Panel Admin</a></li>
-        <li><a href="#botscripts" onclick="filterProducts('botscripts')">Script Bot</a></li>
-        <li><a href="#vvip" onclick="filterProducts('vvip')">PT VVIP</a></li>
-      </ul>
-    </div>
-  </nav>
-
+  
   <!-- Products Section -->
-  <section class="products-section" id="products">
-    <div class="container">
-      <div class="section-title">
-        <h2>Produk Kami</h2>
-        <p>Pilih produk sesuai kebutuhan Anda</p>
-      </div>
-      <div class="products-grid" id="products-container">
-        <!-- Hosting Products -->
-        <div class="product-card" data-category="hosting">
+  <section class="container products-section" id="produk">
+    <h2 class="section-title">Produk Kami</h2>
+    
+    <div class="category-tabs">
+      <div class="category-tab active" data-category="panel">Panel Hosting</div>
+      <div class="category-tab" data-category="script">Script Bot</div>
+      <div class="category-tab" data-category="ptpanel">PT Panel</div>
+    </div>
+    
+    <!-- Panel Hosting Products -->
+    <div class="category-section active" id="panel-section">
+      <div class="products-grid">
+        <div class="product-card">
           <div class="product-image">
             <i class="fas fa-server"></i>
           </div>
-          <div class="product-details">
-            <h3 class="product-title">Panel Hosting 1GB</h3>
-            <p class="product-description">Server hosting dengan kapasitas 1GB RAM, cocok untuk website personal atau blog.</p>
-            <div class="product-price">Rp 15.000</div>
-            <a href="#" class="btn" onclick="buyProduct('Panel Hosting 1GB', 15000)">Beli Sekarang</a>
+          <div class="product-info">
+            <h3>Panel 1GB</h3>
+            <span class="price">Rp 15.000 <small>/bulan</small></span>
+            <p class="description">Panel hosting 1GB RAM dengan performa stabil untuk aplikasi ringan dan bot sederhana.</p>
+            <button class="buy-btn" data-product="Panel 1GB" data-price="15000">Beli Sekarang</button>
           </div>
         </div>
         
-        <div class="product-card" data-category="hosting">
+        <div class="product-card">
           <div class="product-image">
             <i class="fas fa-server"></i>
           </div>
-          <div class="product-details">
-            <h3 class="product-title">Panel Hosting 2GB</h3>
-            <p class="product-description">Server hosting dengan kapasitas 2GB RAM, cocok untuk website bisnis kecil.</p>
-            <div class="product-price">Rp 25.000</div>
-            <a href="#" class="btn" onclick="buyProduct('Panel Hosting 2GB', 25000)">Beli Sekarang</a>
+          <div class="product-info">
+            <h3>Panel 2GB</h3>
+            <span class="price">Rp 25.000 <small>/bulan</small></span>
+            <p class="description">Panel hosting 2GB RAM untuk aplikasi dan bot dengan kebutuhan resource menengah.</p>
+            <button class="buy-btn" data-product="Panel 2GB" data-price="25000">Beli Sekarang</button>
           </div>
         </div>
         
-        <div class="product-card" data-category="hosting">
+        <div class="product-card">
           <div class="product-image">
             <i class="fas fa-server"></i>
           </div>
-          <div class="product-details">
-            <h3 class="product-title">Panel Hosting 5GB</h3>
-            <p class="product-description">Server hosting dengan kapasitas 5GB RAM, cocok untuk aplikasi web yang membutuhkan performa tinggi.</p>
-            <div class="product-price">Rp 50.000</div>
-            <a href="#" class="btn" onclick="buyProduct('Panel Hosting 5GB', 50000)">Beli Sekarang</a>
+          <div class="product-info">
+            <h3>Panel 5GB</h3>
+            <span class="price">Rp 50.000 <small>/bulan</small></span>
+            <p class="description">Panel hosting 5GB RAM untuk aplikasi dan bot yang membutuhkan resource besar.</p>
+            <button class="buy-btn" data-product="Panel 5GB" data-price="50000">Beli Sekarang</button>
           </div>
         </div>
         
-        <div class="product-card" data-category="hosting">
+        <div class="product-card">
           <div class="product-image">
             <i class="fas fa-server"></i>
           </div>
-          <div class="product-details">
-            <h3 class="product-title">Panel Hosting 10GB</h3>
-            <p class="product-description">Server hosting dengan kapasitas 10GB RAM, cocok untuk aplikasi web skala menengah.</p>
-            <div class="product-price">Rp 90.000</div>
-            <a href="#" class="btn" onclick="buyProduct('Panel Hosting 10GB', 90000)">Beli Sekarang</a>
+          <div class="product-info">
+            <h3>Panel 10GB</h3>
+            <span class="price">Rp 90.000 <small>/bulan</small></span>
+            <p class="description">Panel hosting 10GB RAM untuk aplikasi berat dan bot dengan traffic tinggi.</p>
+            <button class="buy-btn" data-product="Panel 10GB" data-price="90000">Beli Sekarang</button>
           </div>
         </div>
         
-        <div class="product-card" data-category="hosting">
+        <div class="product-card">
           <div class="product-image">
             <i class="fas fa-server"></i>
           </div>
-          <div class="product-details">
-            <h3 class="product-title">Panel Hosting Unlimited</h3>
-            <p class="product-description">Server hosting dengan resource tanpa batas, cocok untuk aplikasi web berskala besar.</p>
-            <div class="product-price">Rp 150.000</div>
-            <a href="#" class="btn" onclick="buyProduct('Panel Hosting Unlimited', 150000)">Beli Sekarang</a>
+          <div class="product-info">
+            <h3>Panel Unlimited</h3>
+            <span class="price">Rp 150.000 <small>/bulan</small></span>
+            <p class="description">Panel hosting unlimited resources untuk kebutuhan bisnis tanpa batasan.</p>
+            <button class="buy-btn" data-product="Panel Unlimited" data-price="150000">Beli Sekarang</button>
           </div>
         </div>
         
-        <!-- Panel Products -->
-        <div class="product-card" data-category="panel">
+        <div class="product-card">
           <div class="product-image">
-            <i class="fas fa-tachometer-alt"></i>
+            <i class="fas fa-user-shield"></i>
           </div>
-          <div class="product-details">
-            <h3 class="product-title">Admin Panel</h3>
-            <p class="product-description">Panel admin dengan fitur lengkap untuk mengelola website atau aplikasi Anda.</p>
-            <div class="product-price">Rp 75.000</div>
-            <a href="#" class="btn" onclick="buyProduct('Admin Panel', 75000)">Beli Sekarang</a>
-          </div>
-        </div>
-        
-        <div class="product-card" data-category="panel">
-          <div class="product-image">
-            <i class="fas fa-tachometer-alt"></i>
-          </div>
-          <div class="product-details">
-            <h3 class="product-title">Owner Panel</h3>
-            <p class="product-description">Panel khusus pemilik dengan fitur analitik dan kontrol penuh terhadap sistem.</p>
-            <div class="product-price">Rp 120.000</div>
-            <a href="#" class="btn" onclick="buyProduct('Owner Panel', 120000)">Beli Sekarang</a>
-          </div>
-        </div>
-        
-        <div class="product-card" data-category="panel">
-          <div class="product-image">
-            <i class="fas fa-tachometer-alt"></i>
-          </div>
-          <div class="product-details">
-            <h3 class="product-title">PT Panel</h3>
-            <p class="product-description">Panel khusus untuk perusahaan dengan fitur manajemen tim dan proyek.</p>
-            <div class="product-price">Rp 200.000</div>
-            <a href="#" class="btn" onclick="buyProduct('PT Panel', 200000)">Beli Sekarang</a>
-          </div>
-        </div>
-        
-        <!-- Bot Scripts -->
-        <div class="product-card" data-category="botscripts">
-          <div class="product-image">
-            <i class="fab fa-whatsapp"></i>
-          </div>
-          <div class="product-details">
-            <h3 class="product-title">SC BOT WA V1</h3>
-            <p class="product-description">Script bot WhatsApp basic dengan fitur otomatis reply dan broadcast pesan.</p>
-            <div class="product-price">Rp 35.000</div>
-            <a href="#" class="btn" onclick="buyProduct('SC BOT WA V1', 35000)">Beli Sekarang</a>
-          </div>
-        </div>
-        
-        <div class="product-card" data-category="botscripts">
-          <div class="product-image">
-            <i class="fab fa-whatsapp"></i>
-          </div>
-          <div class="product-details">
-            <h3 class="product-title">SC BOT WA V2</h3>
-            <p class="product-description">Script bot WhatsApp dengan fitur otomatis reply, broadcast, stiker, dan download media.</p>
-            <div class="product-price">Rp 50.000</div>
-            <a href="#" class="btn" onclick="buyProduct('SC BOT WA V2', 50000)">Beli Sekarang</a>
-          </div>
-        </div>
-        
-        <div class="product-card" data-category="botscripts">
-          <div class="product-image">
-            <i class="fab fa-telegram"></i>
-          </div>
-          <div class="product-details">
-            <h3 class="product-title">SC BOT Telegram V1</h3>
-            <p class="product-description">Script bot Telegram dengan fitur otomatis reply dan manajemen grup.</p>
-            <div class="product-price">Rp 40.000</div>
-            <a href="#" class="btn" onclick="buyProduct('SC BOT Telegram V1', 40000)">Beli Sekarang</a>
-          </div>
-        </div>
-        
-        <div class="product-card" data-category="botscripts">
-          <div class="product-image">
-            <i class="fab fa-telegram"></i>
-          </div>
-          <div class="product-details">
-            <h3 class="product-title">SC BOT Telegram V2</h3>
-            <p class="product-description">Script bot Telegram dengan fitur otomatis reply, broadcast, inline query, dan API integrasi.</p>
-            <div class="product-price">Rp 65.000</div>
-            <a href="#" class="btn" onclick="buyProduct('SC BOT Telegram V2', 65000)">Beli Sekarang</a>
-          </div>
-        </div>
-        
-        <!-- VVIP Products -->
-        <div class="product-card" data-category="vvip">
-          <div class="product-image">
-            <i class="fas fa-crown"></i>
-          </div>
-          <div class="product-details">
-            <h3 class="product-title">PT VVIP Package</h3>
-            <p class="product-description">Paket lengkap untuk perusahaan termasuk hosting, panel admin, dan bot terintegrasi.</p>
-            <div class="product-price">Rp 500.000</div>
-            <a href="#" class="btn" onclick="buyProduct('PT VVIP Package', 500000)">Beli Sekarang</a>
+          <div class="product-info">
+            <h3>Admin Panel</h3>
+            <span class="price">Rp 75.000 <small>one-time</small></span>
+            <p class="description">Akses admin panel untuk mengelola user, resource, dan monitoring sistem.</p>
+            <button class="buy-btn" data-product="Admin Panel" data-price="75000">Beli Sekarang</button>
           </div>
         </div>
       </div>
     </div>
-  </section>
-
-  <!-- Features Section -->
-  <section class="features-section">
-    <div class="container">
-      <div class="section-title">
-        <h2>Kenapa Memilih Kami?</h2>
-        <p>Keunggulan layanan yang kami tawarkan</p>
-      </div>
-      <div class="features-grid">
-        <div class="feature-card">
-          <div class="feature-icon">
-            <i class="fas fa-bolt"></i>
+    
+    <!-- Script Bot Products -->
+    <div class="category-section" id="script-section">
+      <div class="products-grid">
+        <div class="product-card">
+          <div class="product-image">
+            <i class="fab fa-whatsapp"></i>
           </div>
-          <h3 class="feature-title">Kecepatan Tinggi</h3>
-          <p class="feature-description">Server kami menggunakan teknologi terbaru untuk memastikan kecepatan akses yang optimal.</p>
+          <div class="product-info">
+            <h3>SC BOT V1</h3>
+            <span class="price">Rp 35.000 <small>one-time</small></span>
+            <p class="description">Script bot WhatsApp & Telegram dengan fitur dasar seperti stiker, download media, dan auto-responder.</p>
+            <button class="buy-btn" data-product="SC BOT V1" data-price="35000">Beli Sekarang</button>
+          </div>
         </div>
         
-        <div class="feature-card">
-          <div class="feature-icon">
-            <i class="fas fa-shield-alt"></i>
+        <div class="product-card">
+          <div class="product-image">
+            <i class="fab fa-whatsapp"></i>
           </div>
-          <h3 class="feature-title">Keamanan Terjamin</h3>
-          <p class="feature-description">Sistem keamanan berlapis untuk melindungi data dan aplikasi Anda dari serangan cyber.</p>
+          <div class="product-info">
+            <h3>SC BOT V2</h3>
+            <span class="price">Rp 65.000 <small>one-time</small></span>
+            <p class="description">Script bot WhatsApp & Telegram dengan fitur premium termasuk AI chat, group management, dan database user.</p>
+            <button class="buy-btn" data-product="SC BOT V2" data-price="65000">Beli Sekarang</button>
+          </div>
         </div>
         
-        <div class="feature-card">
-          <div class="feature-icon">
-            <i class="fas fa-headset"></i>
+        <div class="product-card">
+          <div class="product-image">
+            <i class="fab fa-whatsapp"></i>
           </div>
-          <h3 class="feature-title">Support 24/7</h3>
-          <p class="feature-description">Tim dukungan kami siap membantu Anda 24 jam sehari, 7 hari seminggu.</p>
+          <div class="product-info">
+            <h3>SC BOT V3</h3>
+            <span class="price">Rp 100.000 <small>one-time</small></span>
+            <p class="description">Script bot WhatsApp & Telegram full fitur dengan integrasi payment gateway, broadcast, dan panel admin.</p>
+            <button class="buy-btn" data-product="SC BOT V3" data-price="100000">Beli Sekarang</button>
+          </div>
         </div>
         
-        <div class="feature-card">
-          <div class="feature-icon">
-            <i class="fas fa-sync-alt"></i>
+        <div class="product-card">
+          <div class="product-image">
+            <i class="fab fa-telegram"></i>
           </div>
-          <h3 class="feature-title">Update Rutin</h3>
-          <p class="feature-description">Semua produk kami mendapatkan update rutin untuk memastikan performa dan keamanan optimal.</p>
+          <div class="product-info">
+            <h3>Telegram Bot Premium</h3>
+            <span class="price">Rp 55.000 <small>one-time</small></span>
+            <p class="description">Script bot Telegram khusus dengan fitur premium dan optimasi untuk group management.</p>
+            <button class="buy-btn" data-product="Telegram Bot Premium" data-price="55000">Beli Sekarang</button>
+          </div>
         </div>
       </div>
     </div>
-  </section>
-
-  <!-- Testimonials Section -->
-  <section class="testimonials-section" id="testimonials">
-    <div class="container">
-      <div class="section-title">
-        <h2>Testimoni Pelanggan</h2>
-        <p>Apa kata mereka tentang layanan kami</p>
-      </div>
-      <div class="testimonials-grid">
-        <div class="testimonial-card">
-          <p class="testimonial-content">"Saya sudah menggunakan hosting dari BarMod Store selama 6 bulan dan sangat puas dengan kecepatan dan stabilitasnya. Support yang responsif juga menjadi nilai plus!"</p>
-          <div class="testimonial-author">
-            <div class="testimonial-avatar">AS</div>
-            <div>
-              <div class="testimonial-name">Ahmad Syafiq</div>
-              <div class="testimonial-role">Pemilik Website E-commerce</div>
-            </div>
+    
+    <!-- PT Panel Products -->
+    <div class="category-section" id="ptpanel-section">
+      <div class="products-grid">
+        <div class="product-card">
+          <div class="product-image">
+            <i class="fas fa-building"></i>
+          </div>
+          <div class="product-info">
+            <h3>Owner Panel PT</h3>
+            <span class="price">Rp 200.000 <small>one-time</small></span>
+            <p class="description">Panel khusus untuk pemilik PT dengan kontrol penuh terhadap seluruh sistem.</p>
+            <button class="buy-btn" data-product="Owner Panel PT" data-price="200000">Beli Sekarang</button>
           </div>
         </div>
         
-        <div class="testimonial-card">
-          <p class="testimonial-content">"Script bot WhatsApp dari BarMod Store sangat membantu bisnis saya dalam melayani pelanggan secara otomatis. Fiturnya lengkap dan mudah digunakan!"</p>
-          <div class="testimonial-author">
-            <div class="testimonial-avatar">RD</div>
-            <div>
-              <div class="testimonial-name">Rini Dewi</div>
-              <div class="testimonial-role">Pengusaha UMKM</div>
-            </div>
+        <div class="product-card">
+          <div class="product-image">
+            <i class="fas fa-star"></i>
           </div>
-        </div>
-        
-        <div class="testimonial-card">
-          <p class="testimonial-content">"Panel admin yang disediakan sangat intuitif dan lengkap. Memudahkan saya dalam mengelola website dan melihat statistik pengunjung."</p>
-          <div class="testimonial-author">
-            <div class="testimonial-avatar">BP</div>
-            <div>
-              <div class="testimonial-name">Budi Pratama</div>
-              <div class="testimonial-role">Web Developer</div>
-            </div>
-          </div>
-        </div>
-      </div>
+          <div class="product-info">
+            <h3>PT VVIP</h3>
+            <span class="price">Rp 350.000 <small>one-time</small></span>
+            <p class="description">Paket VVIP untuk PT
