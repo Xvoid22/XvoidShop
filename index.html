@@ -583,23 +583,23 @@
     };
     
     const products = [
-      { name:'Panel 1GB', price:1000, cat:'panel', icon:'https://files.catbox.moe/088vsn.jpg' },
-      { name:'Panel 2GB', price:2000, cat:'panel', icon:'fas fa-server' },
-      { name:'Panel 3GB', price:3000, cat:'panel', icon:'fas fa-server' },
-      { name:'Panel 4GB', price:4000, cat:'panel', icon:'fas fa-server' },
-      { name:'Panel 5GB', price:5000, cat:'panel', icon:'fas fa-server' },
-      { name:'Panel 6GB', price:6000, cat:'panel', icon:'fas fa-server' },
-      { name:'Panel 7GB', price:7000, cat:'panel', icon:'fas fa-server' },
-      { name:'Panel 8GB', price:8000, cat:'panel', icon:'fas fa-server' },
-      { name:'Panel 9GB', price:9000, cat:'panel', icon:'fas fa-server' },
-      { name:'Panel 10GB', price:10000, cat:'panel', icon:'fas fa-server' },
-      { name:'Panel Unlimited', price:5000, cat:'panel', icon:'fas fa-infinity' },
-      { name:'Admin Panel', price:6000, cat:'panel', icon:'fas fa-user-shield' },
-      { name:'PT Panel', price:8000, cat:'panel', icon:'fas fa-user-tie' },
-      { name:'SC DARKXVO V99', price:25000, cat:'bot', icon:'fas fa-robot' },
-      { name:'SC CPANEL V1', price:10000, cat:'bot', icon:'fas fa-robot' },
-      { name:'SC BOT SIMPLE', price:10000, cat:'bot', icon:'fas fa-robot' },
-      { name:'PT VVIP', price:20000, cat:'vvip', icon:'fas fa-crown' }
+      { name:'Panel 1GB', price:1000, cat:'panel', icon:'https://files.catbox.moe/ax7zea.jpg' },
+      { name:'Panel 2GB', price:2000, cat:'panel', icon:'https://files.catbox.moe/ax7zea.jpg' },
+      { name:'Panel 3GB', price:3000, cat:'panel', icon:'https://files.catbox.moe/ax7zea.jpg' },
+      { name:'Panel 4GB', price:4000, cat:'panel', icon:'https://files.catbox.moe/ax7zea.jpg' },
+      { name:'Panel 5GB', price:5000, cat:'panel', icon:'https://files.catbox.moe/ax7zea.jpg' },
+      { name:'Panel 6GB', price:6000, cat:'panel', icon:'https://files.catbox.moe/ax7zea.jpg' },
+      { name:'Panel 7GB', price:7000, cat:'panel', icon:'https://files.catbox.moe/ax7zea.jpg' },
+      { name:'Panel 8GB', price:8000, cat:'panel', icon:'https://files.catbox.moe/ax7zea.jpg' },
+      { name:'Panel 9GB', price:9000, cat:'panel', icon:'https://files.catbox.moe/ax7zea.jpg' },
+      { name:'Panel 10GB', price:10000, cat:'panel', icon:'https://files.catbox.moe/ax7zea.jpg' },
+      { name:'Panel Unlimited', price:5000, cat:'panel', icon:'https://files.catbox.moe/ax7zea.jpg' },
+      { name:'Admin Panel', price:6000, cat:'panel', icon:'https://files.catbox.moe/ax7zea.jpg' },
+      { name:'PT Panel', price:8000, cat:'panel', icon:'https://files.catbox.moe/ax7zea.jpg' },
+      { name:'SC DARKXVO V99', price:25000, cat:'bot', icon:'https://files.catbox.moe/x73j9y.jpg' },
+      { name:'SC CPANEL V1', price:10000, cat:'bot', icon:'https://files.catbox.moe/x73j9y.jpg' },
+      { name:'SC BOT SIMPLE', price:10000, cat:'bot', icon:'https://files.catbox.moe/x73j9y.jpg' },
+      { name:'PT VVIP', price:20000, cat:'vvip', icon:'https://files.catbox.moe/3xiw1d.jpg' }
     ];
     
     const grid = document.getElementById('product-grid');
@@ -612,12 +612,12 @@
         const card = document.createElement('div'); 
         card.className = 'card';
         card.innerHTML = `
-          <img src="https://via.placeholder.com/400x160?text=${encodeURIComponent(p.name)}">
-          <div class="card-body">
-            <div class="card-title">${p.name}</div>
-            <div class="card-price">Rp${p.price.toLocaleString('id')}</div>
-            <button class="btn-buy"><i class="fas fa-shopping-cart"></i> Beli Sekarang</button>
-          </div>`;
+      <img src="${p.icon}" alt="${p.name}" class="w-full h-48 object-cover rounded-lg shadow-md">
+      <div class="card-body">
+        <div class="card-title">${p.name}</div>
+        <div class="card-price">Rp${p.price.toLocaleString('id')}</div>
+        <button class="btn-buy"><i class="fas fa-shopping-cart"></i> Beli Sekarang</button>
+      </div>`;
         card.querySelector('.btn-buy').addEventListener('click', () => openModal(p));
         grid.appendChild(card);
       });
