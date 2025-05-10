@@ -9,8 +9,8 @@
     @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
     
     :root {
-      --primary: #4361ee;
-      --primary-dark: #3a56d4;
+      --primary: #3ab5e3;
+      --primary-dark: #38b8d8;
       --accent: #4cc9f0;
       --accent-dark: #38b8d8;
       --bg: #f8f9fc;
@@ -473,6 +473,213 @@
       background: rgba(67, 97, 238, 0.3);
       border-radius: 10px;
     }
+
+.glow-text {
+  color: white;
+  text-shadow: 0 0 5px var(--accent), 0 0 10px var(--accent-dark), 0 0 20px var(--accent-dark);
+  animation: flicker 1.5s infinite alternate;
+}
+
+.about {
+  background-color: #f1f5f9;
+  padding: 4rem 1rem;
+  color: #1a202c;
+}
+
+.about .container {
+  max-width: 800px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.about p {
+  font-size: 1rem;
+  line-height: 1.7;
+  margin: 1rem 0;
+}
+
+.testimonials {
+  background: #f1f5f9;
+  padding: 4rem 1.5rem;
+  text-align: center;
+}
+
+.section-title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #2d3748;
+  margin-bottom: 2rem;
+}
+
+.testimonial-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 2rem;
+  max-width: 1000px;
+  margin: auto;
+}
+
+.testimonial {
+  background: white;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.06);
+  transition: transform 0.3s ease;
+}
+
+.testimonial:hover {
+  transform: translateY(-5px);
+}
+
+.testimonial p {
+  font-style: italic;
+  color: #4a5568;
+  margin-bottom: 1rem;
+}
+
+.testimonial h4 {
+  color: #3ab5e3;
+  font-size: 1.1rem;
+  margin-bottom: 0.25rem;
+}
+
+.testimonial span {
+  color: #718096;
+  font-size: 0.9rem;
+}
+.top-marquee {
+  background: linear-gradient(to right, #3ab5e3, #4cc9f0);
+  color: #fff;
+  font-weight: bold;
+  padding: 10px 0;
+  font-size: 1rem;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+  z-index: 9999;
+  position: relative;
+  font-family: 'Poppins', sans-serif;
+}
+
+/* BLUE THEME COUNTER */
+.counter-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 40px;
+}
+
+.counter-box {
+  background: linear-gradient(135deg, #3ab5e3, #00C6FF);
+  color: #ffffff;
+  padding: 40px 60px;
+  border-radius: 20px;
+  box-shadow: 0 12px 30px rgba(0, 123, 255, 0.3);
+  text-align: center;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.counter-box:hover {
+  transform: scale(1.05);
+  box-shadow: 0 16px 40px rgba(0, 123, 255, 0.5);
+}
+
+.counter-box h2 {
+  font-size: 2.2rem;
+  margin-bottom: 12px;
+  letter-spacing: 1px;
+  font-weight: 600;
+  color: #e0f0ff;
+}
+
+.counter-box .number {
+  font-size: 3.5rem;
+  font-weight: bold;
+  font-family: 'Courier New', Courier, monospace;
+  text-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
+  transition: all 0.3s ease;
+}
+
+.skills-section {
+  background-color: #f0f4ff;
+  padding: 60px 20px;
+  text-align: center;
+}
+
+.section-title {
+  font-size: 2rem;
+  color: #3ab5e3;
+  margin-bottom: 40px;
+}
+
+.skill {
+  margin-bottom: 25px;
+  width: 90%;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: left;
+}
+
+.skill p {
+  margin-bottom: 8px;
+  font-weight: 600;
+  color: #333;
+}
+
+.skill-bar {
+  background-color: #dfefff;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: inset 0 1px 4px rgba(0, 0, 0, 0.1);
+}
+
+.skill-fill {
+  background: linear-gradient(90deg, #3ab5e3, #00c6ff);
+  color: white;
+  padding: 8px 12px;
+  font-weight: bold;
+  border-radius: 10px 0 0 10px;
+  animation: fillBar 2s ease-in-out;
+}
+
+#telegramButton {
+  position: fixed;
+  bottom: 25px;
+  right: 25px;
+  width: 60px;
+  height: 60px;
+  background-color: #3ab5e3;
+  border-radius: 50%;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+  transition: transform 0.3s ease;
+  text-decoration: none;
+}
+
+#telegramButton:hover {
+  transform: scale(1.1);
+}
+
+@keyframes fillBar {
+  from {
+    width: 0%;
+  }
+  to {
+    width: 100%;
+  }
+}
+
+@keyframes flicker {
+  0% { opacity: 0.9; text-shadow: 0 0 2px var(--accent); }
+  100% { opacity: 1; text-shadow: 0 0 8px var(--accent-dark); }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
     
     .modal-content::-webkit-scrollbar-thumb:hover {
       background: rgba(67, 97, 238, 0.5);
@@ -483,6 +690,13 @@
       display: none;
     }
   </style>
+  <body>
+    <div class="top-marquee">
+  <marquee behavior="scroll" direction="right" scrollamount="5">
+    "SELAMAT DATANG DI TOKO KAMI! TEMUKAN PRODUK TERBAIK DENGAN HARGA TERJANGKAU! BELANJA AMAN, CEPAT, DAN TERPERCAYA!
+  </marquee>
+</div>
+  </body>
 </head>
 <body>
   <header>
@@ -492,7 +706,7 @@
       <div class="hero-badge">
         <i class="fas fa-rocket"></i> Digital Products Provider Since 2024
       </div>
-      <h1>XVOID SHOP</h1>
+      <h1 class="glow-text">XVOID MARKET</h1>
       <p>Produk Digital Premium Berkualitas untuk Kebutuhan Hosting dan Bot Anda</p>
       <div class="hero-contact">
         <i class="fab fa-telegram"></i> Telegram: @Xvoid10
@@ -506,8 +720,9 @@
     <div class="tabs">
       <div class="tab active" data-cat="panel"><i class="fas fa-server"></i> Panel Hosting</div>
       <div class="tab" data-cat="bot"><i class="fas fa-robot"></i> Script Bot</div>
-      <div class="tab" data-cat="vvip"><i class="fas fa-crown"></i> PT VVIP</div>
+      <div class="tab" data-cat="nokos"><i class="fas fa-sms"></i> Nomor Kosong</div>
       <div class="tab" data-cat="web"><i class="fas fa-star"></i> HTML Template</div>
+      <div class="tab" data-cat="all"><i class="fas fa-star"></i> Produk Lainnya</div>
     </div>
     <div class="grid" id="product-grid"></div>
   </div>
@@ -582,6 +797,96 @@
       </div>
     </div>
   </div>
+  
+  <section class="testimonials">
+  <h2 class="section-title">Ulasan Pelanggan Kami?</h2>
+  <div class="testimonial-grid">
+    <div class="testimonial">
+      <p>"Layanan cepat dan support-nya responsif. Recommended!"</p>
+      <h4>Ardana.</h4>
+      <span>Pengguna Panel</span>
+    </div>
+    <div class="testimonial">
+      <p>"Bot panel saya jadi lebih stabil sejak pindah ke XVOID. Terima kasih!"</p>
+      <h4>Rizx.</h4>
+      <span>PT Panel</span>
+    </div>
+    <div class="testimonial">
+      <p>"Harga murah, tampilan mantap. Cocok buat project kecil sampai besar."</p>
+      <h4>VinsHost.</h4>
+      <span>Web Developer</span>
+    </div>
+  </div>
+</section>
+  
+  <section data-aos="fade-up">
+  <div class="counter-container">
+    <div class="counter-box">
+      <h2>Jumlah Pengunjung</h2>
+      <div class="number" id="fake-counter">1,000</div>
+    </div>
+  </div>
+</section>
+
+<section class="skills-section" data-aos="fade-up">
+  <h2 class="section-title">Performa Layanan</h2>
+  <div class="skill">
+    <p>Kecepatan Server</p>
+    <div class="skill-bar">
+      <div class="skill-fill" style="width: 95%">95%</div>
+    </div>
+  </div>
+  <div class="skill">
+    <p>Keamanan Data</p>
+    <div class="skill-bar">
+      <div class="skill-fill" style="width: 90%">90%</div>
+    </div>
+  </div>
+  <div class="skill">
+    <p>Kepuasan Pengguna</p>
+    <div class="skill-bar">
+      <div class="skill-fill" style="width: 98%">98%</div>
+    </div>
+  </div>
+</section>
+  
+  <footer>
+    <section class="about">
+  <div class="container">
+    <h2 class="section-title">Tentang XVOID MARKET</h2>
+    <p>
+      XVOID MARKET adalah penyedia produk digital terpercaya sejak 2024. Kami menyediakan layanan hosting, bot, dan panel dengan harga terjangkau dan kualitas terbaik. Visi kami adalah membantu individu dan pelaku usaha digital mendapatkan solusi yang cepat, praktis, dan efisien.
+    </p>
+    <p>
+      Kami selalu mengutamakan pelayanan pelanggan yang responsif, produk berkualitas, serta proses yang aman dan cepat. Terima kasih telah mempercayai XVOID MARKET sebagai partner digital Anda
+    </p>
+    </p>
+    Kontak Admin : @Xvoid10 || +62 821-6004-5427
+    </p>
+  </div>
+</section>
+</footer>
+
+<a href="https://t.me/@Xvoid10" target="_blank" id="telegramButton" title="Hubungi via Telegram">
+  <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 240 240" fill="white">
+    <path d="M120,0C53.7,0,0,53.7,0,120s53.7,120,120,120s120-53.7,120-120S186.3,0,120,0z M175.6,79.4
+      l-22.2,104.7c-1.7,7.5-6.2,9.3-12.6,5.8l-34.8-25.7l-16.8,16.2c-1.8,1.8-3.4,3.4-7,3.4l2.5-35.6l64.8-58.6
+      c2.8-2.5-0.6-3.9-4.3-1.4l-80.2,50.4l-34.6-10.8c-7.5-2.3-7.6-7.5,1.6-11.1l135.3-52.2
+      C171.1,67.4,177.6,71.3,175.6,79.4z"/>
+  </svg>
+</a>
+
+<script>
+  let counter = 1000;
+
+  function updateFakeCounter() {
+    const change = Math.floor(Math.random() * 10) - 5;
+    counter = Math.max(0, counter + change);
+    document.getElementById('fake-counter').textContent = counter.toLocaleString();
+  }
+
+  setInterval(updateFakeCounter, 2000);
+</script>
 
   <script>
     const TELEGRAM_BOT_TOKEN = '7567845460:AAFPXLrafKx1ZswhrUyXKSP6Oa3MsyX3Pew';
@@ -590,24 +895,27 @@
     const paymentInfo = {
       dana: { type: 'text', value: '083141280525' },
       gopay: { type: 'text', value: '-' },
-      qris: { type: 'image', src: 'https://files.catbox.moe/kalveu.jpg' }
+      qris: { type: 'image', src: 'https://files.catbox.moe/ty8qwx.jpg' }
     };
     
     const products = [
-      { name:'Panel 1GB', price:1000, cat:'panel', icon:'https://files.catbox.moe/ax7zea.jpg' },
-      { name:'Panel 2GB', price:2000, cat:'panel', icon:'https://files.catbox.moe/ax7zea.jpg' },
-      { name:'Panel 3GB', price:3000, cat:'panel', icon:'https://files.catbox.moe/ax7zea.jpg' },
-      { name:'Panel 4GB', price:4000, cat:'panel', icon:'https://files.catbox.moe/ax7zea.jpg' },
-      { name:'Panel 5GB', price:5000, cat:'panel', icon:'https://files.catbox.moe/ax7zea.jpg' },
-      { name:'Panel 6GB', price:6000, cat:'panel', icon:'https://files.catbox.moe/ax7zea.jpg' },
-      { name:'Panel 7GB', price:7000, cat:'panel', icon:'https://files.catbox.moe/ax7zea.jpg' },
-      { name:'Panel 8GB', price:8000, cat:'panel', icon:'https://files.catbox.moe/ax7zea.jpg' },
-      { name:'Panel 9GB', price:9000, cat:'panel', icon:'https://files.catbox.moe/ax7zea.jpg' },
-      { name:'Panel 10GB', price:10000, cat:'panel', icon:'https://files.catbox.moe/ax7zea.jpg' },
-      { name:'Panel Unlimited', price:5000, cat:'panel', icon:'https://files.catbox.moe/ax7zea.jpg' },
-      { name:'Admin Panel', price:6000, cat:'panel', icon:'https://files.catbox.moe/ax7zea.jpg' },
-      { name:'Owner Panel', price:7000, cat:'panel', icon:'https://files.catbox.moe/ax7zea.jpg' },
-      { name:'PT Panel', price:10000, cat:'panel', icon:'https://files.catbox.moe/ax7zea.jpg' },
+      { name:'Panel 1GB', price:1000, cat:'panel', icon:'https://files.catbox.moe/hhycno.jpg' },
+      { name:'Panel 2GB', price:2000, cat:'panel', icon:'https://files.catbox.moe/hhycno.jpg' },
+      { name:'Panel 3GB', price:3000, cat:'panel', icon:'https://files.catbox.moe/hhycno.jpg' },
+      { name:'Panel 4GB', price:4000, cat:'panel', icon:'https://files.catbox.moe/hhycno.jpg' },
+      { name:'Panel 5GB', price:5000, cat:'panel', icon:'https://files.catbox.moe/hhycno.jpg' },
+      { name:'Panel 6GB', price:6000, cat:'panel', icon:'https://files.catbox.moe/hhycno.jpg' },
+      { name:'Panel 7GB', price:7000, cat:'panel', icon:'https://files.catbox.moe/hhycno.jpg' },
+      { name:'Panel 8GB', price:8000, cat:'panel', icon:'https://files.catbox.moe/hhycno.jpg' },
+      { name:'Panel 9GB', price:9000, cat:'panel', icon:'https://files.catbox.moe/hhycno.jpg' },
+      { name:'Panel 10GB', price:10000, cat:'panel', icon:'https://files.catbox.moe/hhycno.jpg' },
+      { name:'Panel Unlimited', price:5000, cat:'panel', icon:'https://files.catbox.moe/hhycno.jpg' },
+      { name:'Admin Panel', price:6000, cat:'panel', icon:'https://files.catbox.moe/hhycno.jpg' },
+      { name:'Owner Panel', price:7000, cat:'panel', icon:'https://files.catbox.moe/hhycno.jpg' },
+      { name:'Nokos Indonesia', price:5000, cat:'nokos', icon:'https://files.catbox.moe/w39qqo.jpeg' },
+      { name:'Nokos Philipines', price:10000, cat:'nokos', icon:'https://files.catbox.moe/w39qqo.jpeg' },
+      { name:'Nokos Canada', price:15000, cat:'nokos', icon:'https://files.catbox.moe/w39qqo.jpeg' },
+      { name:'Nokos Malaysia', price:22000, cat:'nokos', icon:'https://files.catbox.moe/w39qqo.jpeg' },
       { name:'SC DARKXVO V99 TELEGRAM', price:25000, cat:'bot', icon:'https://files.catbox.moe/ulf1fl.jpg' },
       { name:'SC CPANEL TELEGRAM', price:10000, cat:'bot', icon:'https://files.catbox.moe/ulf1fl.jpg' },
       { name:'SC CPANEL WHATSAPP', price:10000, cat:'bot', icon:'https://files.catbox.moe/ulf1fl.jpg' },
@@ -616,7 +924,12 @@
       { name:'PT VVIP', price:20000, cat:'vvip', icon:'https://files.catbox.moe/3xiw1d.jpg' }, 
       { name:'SC HTML PEMBAYARAN', price:5000, cat:'web', icon:'https://files.catbox.moe/neqlhj.jpg' }, 
       { name:'SC HTML STORE', price:10000, cat:'web', icon:'https://files.catbox.moe/neqlhj.jpg' },
-      { name:'JASA CREATE HTML STORE/DLL', price:1, cat:'web', icon:'https://files.catbox.moe/neqlhj.jpg' }
+      { name:'JASA CREATE HTML STORE/DLL', price:1, cat:'web', icon:'https://files.catbox.moe/neqlhj.jpg' },
+      { name:'JASA RENAME SCRIPT', price:5000, cat:'all', icon:'https://files.catbox.moe/bqwi3i.jpeg' },
+      { name:'COURSE SUNTIK SOSMED', price:7000, cat:'all', icon:'https://files.catbox.moe/bqwi3i.jpeg' },
+      { name:'COURSE CREATE NOKOS', price:7000, cat:'all', icon:'https://files.catbox.moe/bqwi3i.jpeg' },
+      { name:'COURSE RANSOM*A*E', price:5000, cat:'all', icon:'https://files.catbox.moe/bqwi3i.jpeg' },
+      { name:'PT VVIP', price:20000, cat:'all', icon:'https://files.catbox.moe/bqwi3i.jpeg' }
     ];
     
     const grid = document.getElementById('product-grid');
